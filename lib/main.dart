@@ -14,12 +14,15 @@ int result = multi(5, 7);
 print (result);
 }
 
-multi(5, 7);
+
 
 //named argument
 
-void multi2({a, b}){
-    print(a * b);
+void main(){
+    int multi2({a, b}){
+        return a * b;
+    }
+  int result = multi2(a:5, b:5);
+    print (result);
 }
 
-multi2(5,7);
