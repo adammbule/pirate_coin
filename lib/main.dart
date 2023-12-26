@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
-
-void main(){//defining the function parameters when defining a function
-runApp(
-    const MaterialApp(
-        home: Scaffold(
-            body: Center(
-                child: Text('Hello  !!'),
-),
-),
-),//class
-);//calling the function arguments when calling a function
+void main() {
+  //defining the function parameters when defining a function
+  runApp(
+     MaterialApp(
+      home: Scaffold(
+        backgroundColor: const Color.fromARGB(255, 13, 29, 37),
+        body: Container(
+          //decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color.fromARGB(255, 238, 239, 240)])),
+           child: const Center(
+            child: Text('Hello  World !!', style: TextStyle(
+              color: Colors.white,
+              fontSize: 28.5,),
+          ),
+           ),
+        ),
+      ),
+    ), //class
+  ); //calling the function arguments when calling a function
 }
 
 //Remove comments and run
@@ -24,7 +31,7 @@ runApp(
 //print (result);
 //}
 
-
+//widgets are just objects--> core data structure in flutter
 
 //named argument
 
@@ -35,4 +42,3 @@ runApp(
   //int result = multi2(a:5, b:5);
    // print (result);
 }*/
-
