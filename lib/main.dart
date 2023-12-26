@@ -6,22 +6,33 @@ void main() {
      MaterialApp(
       home: Scaffold(
         backgroundColor: const Color.fromARGB(255, 13, 29, 37),
-        body: Container(
-          //decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color.fromARGB(255, 238, 239, 240)])),
+        body: TextboxContainer(),
+      ),
+    ), //class
+  ); //calling the function arguments when calling a function
+}
+
+//create class fot textbox
+class TextboxContainer extends StatelessWidget {
+  @override
+  Widget build(context) {
+    return Container(
+          decoration: const BoxDecoration(gradient: LinearGradient(colors: [Color.fromARGB(255, 31, 70, 109),
+          Color.fromARGB(255, 14, 30, 83),]),),
            child: const Center(
             child: Text('Hello  World !!', style: TextStyle(
               color: Colors.white,
               fontSize: 28.5,),
           ),
            ),
-        ),
-      ),
-    ), //class
-  ); //calling the function arguments when calling a function
+        );
+
+  }   //build should return a widget
 }
 
 //Remove comments and run
 //const is used to optimize runtime of the application. --best practise
+//Class/o bject Instaciation
 //position argument
 /*void main(){
    // int multi(a, b){
