@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5,28 +7,51 @@ void main() {
   runApp(
     MaterialApp(
       initialRoute:'/',
-      routes:{        
-        '/second':(context) =>  StartScreen(),
-        '/third':(context) => LoginScreen(),
+      routes:{     
+         '/':(context) => StartScreen(),
+        '/second':(context) =>  LoginScreen(),
+        '/third':(context) => CreateScreen(),
       },
+      ),
+  ); //calling the function arguments when calling a function
+}
 
-      home: Scaffold(
+class StartScreen extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
         backgroundColor: const Color.fromARGB(255, 13, 29, 37),
         body: Center(
-        child: ElevatedButton(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children:[
+            const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+          'Hello  World !!',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28.5,
+                  ),),
+        ),
+              ElevatedButton(
           // Within the `FirstScreen` widget
-          onPressed: () {
+            onPressed: () {
             // Navigate to the second screen using a named route.
-            
-          },
+            Navigator.push(context,
+      MaterialPageRoute(builder: (context) => LoginScreen(),));
+              },
           child: const Text('Start'),
         
       ),
+    ]),
     ), //class
-  ),),); //calling the function arguments when calling a function
+  );
+  }
 }
 
-class StartScreen extends StatelessWidget{
+class LoginScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
@@ -38,8 +63,8 @@ class StartScreen extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [ const TextField(
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Enter Your Email/Username'
+          border: UnderlineInputBorder(),
+          labelText: 'Enter Your Email/Username'
         ),
       ),
         TextFormField(
@@ -47,7 +72,19 @@ class StartScreen extends StatelessWidget{
           border: UnderlineInputBorder(),
           labelText: 'Enter your Password',
             ),
-          ),]
+          ),
+          ElevatedButton(
+            onPressed: (){
+              Navigator.pushNamed(context, '/');
+            },
+            child: const Text('Login'),
+          ),
+          ElevatedButton(onPressed: (){
+            Navigator.pushNamed (context, '/third');
+          },
+          child: const Text('Register')),
+          
+          ]
         ),
       );
        
@@ -57,24 +94,50 @@ class StartScreen extends StatelessWidget{
 }
 
 
-class LoginScreen extends StatelessWidget {
+class CreateScreen extends StatelessWidget {
   //const secondScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Member Validation'),
+        title: const Text('Member Login'),
       ),
       body: Center(
-        child: ElevatedButton(
-          // Within the SecondScreen widget
-          onPressed: () {
-            // Navigate back to the first screen by popping the current route
-            // off the stack.
-            Navigator.pop(context);
-          },
-          child: const Text('LOGIN'),
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Enter Your Email',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Enter Your Password',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Repeat Password',
+              ),
+            ),
+            ElevatedButton(
+              // Within the SecondScreen widget
+              onPressed: () {
+                // Navigate back to the first screen by popping the current route
+                // off the stack.
+                
+                     },
+              child: const Text('Sign Up'),
+            ),
+            Text('Already a member?'),
+            ElevatedButton(onPressed: (){
+                Navigator.pushNamed(context, '/second');
+            }, child: const Text('Login'))
+          ],
         ),
       ),
     );
@@ -106,27 +169,3 @@ class TextboxContainer extends StatelessWidget {
 
   //class fot the member validation screen
 } 
-
-//Remove comments and run
-//const is used to optimize runtime of the application. --best practise
-//Class/o bject Instaciation
-//position argument
-/*void main(){
-   // int multi(a, b){
-    //return a * b;
-}*/
-//int result = multi(5, 7);
-//print (result);
-//}
-
-//widgets are just objects--> core data structure in flutter
-
-//named argument
-
-/*void main(){
-    //int multi2({a, b}){
-     //   return a * b;
-    //}
-  //int result = multi2(a:5, b:5);
-   // print (result);
-}*/
