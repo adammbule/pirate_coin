@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,6 +9,7 @@ void main() {
          '/':(context) => StartScreen(),
         '/second':(context) =>  LoginScreen(),
         '/third':(context) => CreateScreen(),
+        '/home':(context) => HomeScreen(),
       },
       ),
   ); //calling the function arguments when calling a function
@@ -75,7 +74,7 @@ class LoginScreen extends StatelessWidget{
           ),
           ElevatedButton(
             onPressed: (){
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/home');
             },
             child: const Text('Login'),
           ),
@@ -144,6 +143,40 @@ class CreateScreen extends StatelessWidget {
   }
 }
 
+
+
+
+class HomeScreen extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    const title = 'HOME';
+
+    return MaterialApp(
+      title: title,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(title),
+        ),
+        body: GridView.count(
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          crossAxisCount: 2,
+          // Generate 4 widgets that display their index in the List.
+          children: List.generate(4, (index) {
+            return Center(
+              child: Text(
+                'Item $index',
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+
+  }
+}
 //create class fot textbox
 class TextboxContainer extends StatelessWidget {
   @override
@@ -169,3 +202,4 @@ class TextboxContainer extends StatelessWidget {
 
   //class fot the member validation screen
 } 
+
