@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
           children: List.generate(4, (index) {
             return Center(
               child: Text(
-                'Item $index',
+                'Movie $index',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             );
