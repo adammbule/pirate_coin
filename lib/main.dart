@@ -9,7 +9,8 @@ void main() {
          '/':(context) => StartScreen(),
         '/second':(context) =>  LoginScreen(),
         '/third':(context) => CreateScreen(),
-        '/home':(context) => HomeScreen(),
+        '/home':(context) => const HomeScreen(),
+        'third':(context) => TrendingMovieScreen(),
       },
       ),
   ); //calling the function arguments when calling a function
@@ -55,6 +56,7 @@ class LoginScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar (
         title: const Text('SignUP'),
       ),
@@ -77,15 +79,22 @@ class LoginScreen extends StatelessWidget{
               Navigator.pushNamed(context, '/home');
             },
             child: const Text('Login'),
-          ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),),
+        ),
+          
           ElevatedButton(onPressed: (){
             Navigator.pushNamed (context, '/third');
           },
-          child: const Text('Register')),
+          child: const Text('Register'),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),),
+        )]),
           
-          ]
-        ),
-      );
+          
+          
+        );
+      
        
       
     
@@ -99,6 +108,7 @@ class CreateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: const Text('Member Login'),
       ),
@@ -131,12 +141,19 @@ class CreateScreen extends StatelessWidget {
                 
                      },
               child: const Text('Sign Up'),
-            ),
+              style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),),
+        ),
+            
             Text('Already a member?'),
-            ElevatedButton(onPressed: (){
+            ElevatedButton(                         
+              onPressed: (){
                 Navigator.pushNamed(context, '/second');
-            }, child: const Text('Login'))
-          ],
+            }, 
+            child: Text('Login'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),),
+        )],
         ),
       ),
     );
@@ -147,6 +164,8 @@ class CreateScreen extends StatelessWidget {
 
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +174,7 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
+        backgroundColor: Colors.blueGrey,
         appBar: AppBar(
           title: const Text(title),
         ),
@@ -163,18 +183,42 @@ class HomeScreen extends StatelessWidget {
           // horizontal, this produces 2 rows.
           crossAxisCount: 2,
           // Generate 4 widgets that display their index in the List.
-          children: List.generate(4, (index) {
+          children: 
+                    List.generate(1, (index) {
             return Center(
               child: Text(
-                'Movie $index',
+                'Movies',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             );
-          }),
-        ),
-      ),
-    );
+          }),),),);
+          }
+       
+    
 
+  }
+
+class TrendingMovieScreen extends StatelessWidget {
+  //const MovieScreen({super.key});
+  static const title = 'Trending Movies';
+
+  Widget build(context){
+    return MaterialApp(
+      title: title,
+      home: Scaffold(
+      backgroundColor: Colors.blueGrey,
+      appBar: AppBar(
+        title: const Text(title),
+      ),
+      body: GridView.count(crossAxisCount: 2,
+      children: List.generate(20, (index){
+        return Center(
+          child: Text('Mad Max: Fury Road',
+          style: Theme.of(context).textTheme.headlineSmall,),
+          );
+      },)
+    )),);
+    
   }
 }
 //create class fot textbox
