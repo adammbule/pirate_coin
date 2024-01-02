@@ -6,18 +6,19 @@ void main() {
     MaterialApp(
       initialRoute:'/',
       routes:{     
-         '/':(context) => StartScreen(),
-        '/second':(context) =>  LoginScreen(),
-        '/third':(context) => CreateScreen(),
+         '/':(context) => const StartScreen(),
+        '/second':(context) =>  const LoginScreen(),
+        '/third':(context) => const CreateScreen(),
         '/home':(context) => const HomeScreen(),
-        'third':(context) => TrendingMovieScreen(),
+        'third':(context) => const TrendingMovieScreen(),
+        'fourth':(context) => const MovieOverviewScreen(),
       },
       ),
   ); //calling the function arguments when calling a function
 }
 
 class StartScreen extends StatelessWidget {
-
+    const StartScreen({super.key});
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -40,7 +41,7 @@ class StartScreen extends StatelessWidget {
             onPressed: () {
             // Navigate to the second screen using a named route.
             Navigator.push(context,
-      MaterialPageRoute(builder: (context) => LoginScreen(),));
+      MaterialPageRoute(builder: (context) => const LoginScreen(),));
               },
           child: const Text('Start'),
         
@@ -52,7 +53,7 @@ class StartScreen extends StatelessWidget {
 }
 
 class LoginScreen extends StatelessWidget{
-
+  const LoginScreen({super.key});
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -102,15 +103,14 @@ class LoginScreen extends StatelessWidget{
 }
 
 
-class CreateScreen extends StatelessWidget {
-  //const secondScreen({super.key});
-
+class CreateScreen extends StatelessWidget {  //const secondScreen({super.key});
+const CreateScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        title: const Text('Member Login'),
+        title: const Text('Member Sign Up'),
       ),
       body: Center(
         child: Column(
@@ -171,27 +171,34 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     const title = 'HOME';
 
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        backgroundColor: Colors.blueGrey,
-        appBar: AppBar(
-          title: const Text(title),
-        ),
-        body: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
-          crossAxisCount: 2,
-          // Generate 4 widgets that display their index in the List.
-          children: 
-                    List.generate(1, (index) {
-            return Center(
-              child: Text(
-                'Movies',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            );
-          }),),),);
+    return GestureDetector(
+      onTap:(){
+        Navigator.push(context,
+        MaterialPageRoute(builder: ((context) =>  const MovieOverviewScreen())));
+      },
+      child: MaterialApp(
+        title: title,
+        home: Scaffold(
+          backgroundColor: Colors.blueGrey,
+          appBar: AppBar(
+            title: const Text(title),
+          ),
+          body: GridView.count(
+            // Create a grid with 2 columns. If you change the scrollDirection to
+            // horizontal, this produces 2 rows.
+            crossAxisCount: 2,
+            // Generate 4 widgets that display their index in the List.
+            children: 
+                      List.generate(1, (index) {
+              return Center(
+                child: Text(
+                  'Movies',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                
+              );
+            }),),),),
+    );
           }
        
     
@@ -199,9 +206,9 @@ class HomeScreen extends StatelessWidget {
   }
 
 class TrendingMovieScreen extends StatelessWidget {
-  //const MovieScreen({super.key});
+  const TrendingMovieScreen({super.key});
   static const title = 'Trending Movies';
-
+@override
   Widget build(context){
     return MaterialApp(
       title: title,
@@ -223,6 +230,7 @@ class TrendingMovieScreen extends StatelessWidget {
 }
 //create class fot textbox
 class TextboxContainer extends StatelessWidget {
+  const TextboxContainer({super.key});
   @override
   Widget build(context) {
     return Container(
@@ -246,4 +254,35 @@ class TextboxContainer extends StatelessWidget {
 
   //class fot the member validation screen
 } 
+//pick custom font for everything
+class MovieOverviewScreen extends StatelessWidget {
+  const MovieOverviewScreen({super.key});
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 247, 246, 246),
+      body: Column(
+        children: [          
+            Text(
+              'Mad Max:Fury Road',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: CircleBorder(),
+              ),
+                onPressed: (){
+                 Navigator.pushNamed(context, '/home');
+               },
+               child: const Text('Play'),//insert clickable icon.
+               
+           
+            
+          ),
+        ],
+      ),
+      
+    );
+  }
 
+}
