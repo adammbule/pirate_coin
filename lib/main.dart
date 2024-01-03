@@ -274,11 +274,12 @@ class MovieOverviewScreen extends StatelessWidget {
                 onPressed: (){
                  Navigator.pushNamed(context, '/home');
                },
-               child: const Text('Play'),//insert clickable icon.
-               
+               child: const Text('Play'),//insert clickable icon.              
            
             
           ),
+          Image.asset('images/madmax.jpg',
+          fit:BoxFit.fitHeight)
         ],
       ),
       
