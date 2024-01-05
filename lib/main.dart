@@ -260,12 +260,12 @@ class MovieOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 246, 246),
+      backgroundColor: Color.fromARGB(255, 65, 64, 64),
       body: Column(
         children: [          
             Text(
               'Mad Max:Fury Road',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -279,7 +279,8 @@ class MovieOverviewScreen extends StatelessWidget {
             
           ),
           Image.asset('images/madmax.jpg',
-          fit:BoxFit.fitHeight)
+          fit:BoxFit.fitHeight
+          )
         ],
       ),
       
