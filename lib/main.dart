@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,6 +14,7 @@ void main() {
         '/home': (context) => const HomeScreen(),
         'third': (context) => TrendingMovieScreen(),
         'fourth': (context) => MovieOverviewScreen(),
+        '/fifth': (context) => MyAccountScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -58,7 +61,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 31, 34, 36),
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
         title: const Text('SignUP'),
       ),
@@ -80,7 +83,8 @@ class LoginScreen extends StatelessWidget {
           },
           child: const Text('Login'),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 255, 17, 0)),
           ),
         ),
         ElevatedButton(
@@ -89,7 +93,8 @@ class LoginScreen extends StatelessWidget {
           },
           child: const Text('Register'),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 243, 22, 6)),
           ),
         )
       ]),
@@ -98,9 +103,9 @@ class LoginScreen extends StatelessWidget {
 }
 
 class CreateScreen extends StatelessWidget {
-   //const CreateScreen({super.key});
+  //const CreateScreen({super.key});
 
-   bool _isChecked =false;
+  bool _isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,15 +137,11 @@ class CreateScreen extends StatelessWidget {
             ),
             Row(
               children: [
-                Checkbox(value: _isChecked, 
-                onChanged: (bool? value){
-                  
-                  }),
-                  Text('Accept Our Terms and Conditions.'),
+                Checkbox(value: _isChecked, onChanged: (bool? value) {}),
+                Text('Accept Our Terms and Conditions.'),
               ],
             ),
-
-              ElevatedButton(
+            ElevatedButton(
               // Within the SecondScreen widget
               onPressed: () {
                 // Navigate back to the first screen by popping the current route
@@ -178,43 +179,50 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-        backgroundColor: Colors.blueGrey,
-        appBar: AppBar(
-          title: const Text(title),
-        ),
-        body: Row(crossAxisAlignment: CrossAxisAlignment.center, 
-        children: [
-          /*Container(
+          backgroundColor: Colors.blueGrey,
+          appBar: AppBar(
+            title: const Text(title),
+          ),
+          body: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            /*Container(
             child: GestureDetector(
               onTap: () => '/fourth',
             ),
           
           ),*/
-          GestureDetector(
-            onTap:(){ Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const MovieOverviewScreen()))); },
-            child: Column(
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => const MovieOverviewScreen())));
+              },
+              child: Column(
                 children: [
                   Expanded(
                     child: Image.asset('images/madmax.jpg'),
                   ),
                   Text('Movies')
+                ],
+              ),
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SeriesOverviewScreen()));
+                },
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Image.asset('images/hotd.jpg'),
+                    ),
+                    Text('Series')
                   ],
-              ),),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(context, 
-              MaterialPageRoute(builder: (context)=> const SeriesOverviewScreen()));
-            },
-            child: Column(
-              children: [
-                Expanded(child: Image.asset('images/hotd.jpg'),),
-                Text('Series')
-              ],)
-          ),
-             ])),
-      );
-    
+                )),
+          ])),
+    );
   }
 }
 
@@ -306,7 +314,6 @@ class MovieOverviewScreen extends StatelessWidget {
             height: 452,
             width: 600,
             fit: BoxFit.fitHeight,
-            
           ),
         ],
       ),
@@ -334,7 +341,7 @@ class SeriesOverviewScreen extends StatelessWidget {
               shape: CircleBorder(),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/fifth');
             },
             child: const Text('Play'), //insert clickable icon.
           ),
@@ -343,9 +350,33 @@ class SeriesOverviewScreen extends StatelessWidget {
             height: 452,
             width: 600,
             fit: BoxFit.contain,
-            
           ),
         ],
       ),
     );
-  }}
+  }
+}
+
+class MyAccountScreen extends StatelessWidget {
+  const MyAccountScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text(
+          'My Account',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+          ),
+        ),
+      ),
+      body: const Text(
+        'My Account',
+        style: TextStyle(color: Colors.white,
+        fontSize: 28,
+        fontWeight: FontWeight.bold),
+        ),);
+  }
+}
