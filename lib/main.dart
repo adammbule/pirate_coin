@@ -380,3 +380,17 @@ class MyAccountScreen extends StatelessWidget {
         ),);
   }
 }
+
+class PirateXchangeScreen extends StatelessWidget {
+  const PirateXchangeScreen ({super.key});
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(title: Text('PirateXchange', ),),
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [Row()],
+      ),
+    );
+  }
+}
