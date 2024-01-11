@@ -1,3 +1,4 @@
+
 import 'dart:js';
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ void main() {
         'third': (context) => TrendingMovieScreen(),
         'fourth': (context) => MovieOverviewScreen(),
         '/fifth': (context) => MyAccountScreen(),
+        '/sixth': (context) => PirateXchangeScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -61,7 +63,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: const Color.fromARGB(255, 12, 12, 12),
       appBar: AppBar(
         title: const Text('SignUP'),
       ),
@@ -81,17 +83,17 @@ class LoginScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/home');
           },
-          child: const Text('Login'),
+          child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight:FontWeight.bold, )),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 255, 17, 0)),
+                Color.fromARGB(255, 243, 22, 6)),
           ),
         ),
         ElevatedButton(
           onPressed: () {
             Navigator.pushNamed(context, '/third');
           },
-          child: const Text('Register'),
+          child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
                 const Color.fromARGB(255, 243, 22, 6)),
@@ -179,7 +181,7 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Color.fromARGB(255, 15, 15, 15),
           appBar: AppBar(
             title: const Text(title),
           ),
@@ -202,7 +204,11 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: Image.asset('images/madmax.jpg'),
                   ),
-                  Text('Movies')
+                  Text('Movies',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),)
                 ],
               ),
             ),
@@ -218,7 +224,8 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: Image.asset('images/hotd.jpg'),
                     ),
-                    Text('Series')
+                    Text('Series',
+                    style: TextStyle(color: Colors.white, fontSize: 25,))
                   ],
                 )),
           ])),
@@ -265,8 +272,8 @@ class TextboxContainer extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
-          Color.fromARGB(255, 31, 70, 109),
-          Color.fromARGB(255, 14, 30, 83),
+          Color.fromARGB(255, 19, 20, 20),
+          Color.fromARGB(255, 10, 10, 10),
         ]),
       ),
       child: const Center(
@@ -293,6 +300,13 @@ class MovieOverviewScreen extends StatelessWidget {
       backgroundColor: Color.fromARGB(255, 0, 0, 0),
       body: Column(
         children: [
+          Image.asset(//place images in placeholders eventually
+            'Images/madmax.jpg',
+            height: 300,
+            width: 800,
+            //fit:BoxFit.fitWidth,
+            
+          ),
           Text(
             'Mad Max:Fury Road',
             style: TextStyle(
@@ -305,16 +319,22 @@ class MovieOverviewScreen extends StatelessWidget {
               shape: CircleBorder(),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushNamed(context, '/sixth');
             },
             child: const Text('Play'), //insert clickable icon.
           ),
-          Image.asset(
-            'Images/madmax.jpg',
-            height: 452,
-            width: 600,
-            fit: BoxFit.fitHeight,
-          ),
+          Text('Mad Max',
+          style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),),
+          Text('Sand, Dystopia, Wild cars, Action!!!', 
+          style: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),),
+          
+          
         ],
       ),
     );
@@ -386,10 +406,16 @@ class PirateXchangeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(title: Text('PirateXchange', ),),
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [Row()],
+      backgroundColor: const Color.fromARGB(255, 14, 13, 13),
+      body: const Column(
+        children: [
+          Text('PirateXchange',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 30,
+      ), 
+       ),
+        ],
       ),
     );
   }
