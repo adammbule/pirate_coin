@@ -1,5 +1,7 @@
 
 import 'dart:js';
+import 'dart:convert';
+//import 'package:http/shujaanet.com/coin.dart' as http;
 
 import 'package:flutter/material.dart';
 
@@ -9,14 +11,14 @@ void main() {
     MaterialApp(
       initialRoute: '/',
       routes: {
-        '/': (context) => StartScreen(),
-        '/second': (context) => LoginScreen(),
+        '/': (context) => const StartScreen(),
+        '/second': (context) => const LoginScreen(),
         '/third': (context) => CreateScreen(),
         '/home': (context) => const HomeScreen(),
-        'third': (context) => TrendingMovieScreen(),
-        'fourth': (context) => MovieOverviewScreen(),
-        '/fifth': (context) => MyAccountScreen(),
-        '/sixth': (context) => PirateXchangeScreen(),
+        'third': (context) => const TrendingMovieScreen(),
+        'fourth': (context) => const MovieOverviewScreen(),
+        '/fifth': (context) => const MyAccountScreen(),
+        '/sixth': (context) => const PirateXchangeScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -57,7 +59,7 @@ class StartScreen extends StatelessWidget {
     );
   }
 }
-
+//change to statefull widgets
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   @override
@@ -69,11 +71,13 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const TextField(
+          controller: _usernameController,
           decoration: InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Enter Your Email/Username'),
         ),
         TextFormField(
+          controller: _passwordController,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             labelText: 'Enter your Password',
@@ -81,6 +85,7 @@ class LoginScreen extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
+            sendTextToAPI(_usernameController.text);
             Navigator.pushNamed(context, '/home');
           },
           child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight:FontWeight.bold, )),
@@ -91,6 +96,7 @@ class LoginScreen extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
+            
             Navigator.pushNamed(context, '/third');
           },
           child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
@@ -119,6 +125,7 @@ class CreateScreen extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
+              controller: _emailController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Your Email',
@@ -126,6 +133,7 @@ class CreateScreen extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: _FirstPasswordController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Your Password',
@@ -133,6 +141,7 @@ class CreateScreen extends StatelessWidget {
             ),
             TextFormField(
               decoration: InputDecoration(
+                controller: _secoundPasswordController,
                 border: UnderlineInputBorder(),
                 labelText: 'Repeat Password',
               ),
@@ -146,6 +155,7 @@ class CreateScreen extends StatelessWidget {
             ElevatedButton(
               // Within the SecondScreen widget
               onPressed: () {
+                sendTextToAPI(_emailController.Text);
                 // Navigate back to the first screen by popping the current route
                 // off the stack.
               },
