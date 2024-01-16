@@ -434,4 +434,7 @@ class PirateXchangeScreen extends StatelessWidget {
 /*Intro to State
 State is whatever tools/data you need to rebuild the UI at any moment in time.
 Ephemeral- local state -e.g an index being reset to zero once user restarts application.-setState()
-App State- State that you want shared between user sessions- login, shopping cart, notifications, user preferences, unread sms*/
+App State- State that you want shared between user sessions- login, shopping cart, notifications, user preferences, unread sms
+Keep the state above the widgets that use it.
+To change the UI, you have to rebuild it
+Do not fight the framework*/
