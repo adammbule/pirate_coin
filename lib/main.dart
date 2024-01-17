@@ -437,4 +437,5 @@ Ephemeral- local state -e.g an index being reset to zero once user restarts appl
 App State- State that you want shared between user sessions- login, shopping cart, notifications, user preferences, unread sms
 Keep the state above the widgets that use it.
 To change the UI, you have to rebuild it
-Do not fight the framework*/
+Do not fight the framework
+Everything is a widget in Flutter*/
