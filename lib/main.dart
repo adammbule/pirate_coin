@@ -1,6 +1,7 @@
 
 import 'dart:js';
 import 'dart:convert';
+import 'package:provider/provider.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 void main() {
   //defining the function parameters when defining a function
   runApp(
-    MaterialApp(
+     MaterialApp(
       initialRoute: '/',
       routes: {
         '/': (context) => const StartScreen(),
@@ -19,6 +20,7 @@ void main() {
         'fourth': (context) => const MovieOverviewScreen(),
         '/fifth': (context) => const MyAccountScreen(),
         '/sixth': (context) => const PirateXchangeScreen(),
+        '/seven':(context) => const MyWatchlistScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -71,13 +73,13 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const TextField(
-          controller: _usernameController,
+          //controller: _usernameController,
           decoration: InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Enter Your Email/Username'),
         ),
         TextFormField(
-          controller: _passwordController,
+          //controller: _passwordController,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             labelText: 'Enter your Password',
@@ -85,7 +87,7 @@ class LoginScreen extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            sendTextToAPI(_usernameController.text);
+            //sendTextToAPI(_usernameController.text);
             Navigator.pushNamed(context, '/home');
           },
           child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight:FontWeight.bold, )),
@@ -125,7 +127,7 @@ class CreateScreen extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              controller: _emailController,
+              //controller: _emailController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Your Email',
@@ -133,7 +135,7 @@ class CreateScreen extends StatelessWidget {
               ),
             ),
             TextFormField(
-              controller: _FirstPasswordController,
+              //controller: _FirstPasswordController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 labelText: 'Enter Your Password',
@@ -141,7 +143,7 @@ class CreateScreen extends StatelessWidget {
             ),
             TextFormField(
               decoration: InputDecoration(
-                controller: _secoundPasswordController,
+                //controller: _secoundPasswordController,
                 border: UnderlineInputBorder(),
                 labelText: 'Repeat Password',
               ),
@@ -155,7 +157,7 @@ class CreateScreen extends StatelessWidget {
             ElevatedButton(
               // Within the SecondScreen widget
               onPressed: () {
-                sendTextToAPI(_emailController.Text);
+                //sendTextToAPI(_emailController.Text);
                 // Navigate back to the first screen by popping the current route
                 // off the stack.
               },
@@ -330,6 +332,7 @@ class MovieOverviewScreen extends StatelessWidget {
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/sixth');
+              //notifyListeners();
             },
             child: const Text('Play'), //insert clickable icon.
           ),
@@ -411,6 +414,16 @@ class MyAccountScreen extends StatelessWidget {
   }
 }
 
+class MyWatchlistScreen extends StatelessWidget {
+ const MyWatchlistScreen ({super.key});
+ @override
+ Widget build(BuildContext context){
+  return Scaffold(
+    backgroundColor: Colors.black,
+  );
+ }
+}
+
 class PirateXchangeScreen extends StatelessWidget {
   const PirateXchangeScreen ({super.key});
   @override
@@ -438,4 +451,8 @@ App State- State that you want shared between user sessions- login, shopping car
 Keep the state above the widgets that use it.
 To change the UI, you have to rebuild it
 Do not fight the framework
-Everything is a widget in Flutter*/
+Everything is a widget in Flutter
+Provider-ChangeNotifier, ChangeNotifierProvider & Consumer
+ChangeNotifier --> You need to call the notifyListeners() anytime the UI changes.
+ChangeNotifierProvider provides an instance of changeNotifier to its descendants. Place above the widgets that access it.
+*/
