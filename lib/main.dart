@@ -450,9 +450,11 @@ Ephemeral- local state -e.g an index being reset to zero once user restarts appl
 App State- State that you want shared between user sessions- login, shopping cart, notifications, user preferences, unread sms
 Keep the state above the widgets that use it.
 To change the UI, you have to rebuild it
-Do not fight the framework
+Do not fight the framework ....  UI = f(State)
 Everything is a widget in Flutter
 Provider-ChangeNotifier, ChangeNotifierProvider & Consumer
 ChangeNotifier --> You need to call the notifyListeners() anytime the UI changes.
-ChangeNotifierProvider provides an instance of changeNotifier to its descendants. Place above the widgets that access it.
-*/
+ChangeNotifierProvider provides an instance of changeNotifier to its descendants. Place above the widgets that access it. Multiprovider to provide for more than one class
+Consumer widget build is the only argument - calls the build function. build has the context, ChangeNotifier instance & child.
+  --Best practice to put the consumer widget as deep as possible in your widget to avoid rebuilding large chunks of UI due to minor changes on other places.
+Performance testing in flutter*/
