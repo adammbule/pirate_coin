@@ -1,6 +1,8 @@
 
 import 'dart:js';
 import 'dart:convert';
+import 'dart:js_interop_unsafe';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
 
@@ -18,7 +20,7 @@ void main() {
         '/home': (context) => const HomeScreen(),
         'third': (context) => const TrendingMovieScreen(),
         'fourth': (context) => const MovieOverviewScreen(),
-        '/fifth': (context) => const MyAccountScreen(),
+        '/fifth': (context) =>  MyAccountScreen(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
       },
@@ -331,7 +333,7 @@ class MovieOverviewScreen extends StatelessWidget {
               shape: CircleBorder(),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/sixth');
+              Navigator.pushNamed(context, '/fifth');
               //notifyListeners();
             },
             child: const Text('Play'), //insert clickable icon.
@@ -391,8 +393,13 @@ class SeriesOverviewScreen extends StatelessWidget {
 }
 
 class MyAccountScreen extends StatelessWidget {
-  const MyAccountScreen({super.key});
+  //const MyAccountScreen({super.key});
+  late Future<Movie> futureMovie;
   @override
+  void initState(){
+    //super.initState();
+    futureMovie = fetchMovie();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -402,15 +409,13 @@ class MyAccountScreen extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
             fontSize: 25,
+      
           ),
         ),
       ),
-      body: const Text(
-        'My Account',
-        style: TextStyle(color: Colors.white,
-        fontSize: 28,
-        fontWeight: FontWeight.bold),
-        ),);
+      
+      
+        );
   }
 }
 
@@ -443,6 +448,50 @@ class PirateXchangeScreen extends StatelessWidget {
     );
   }
 }
+
+class Movie {
+  final int MovieId;
+  final String Title;
+  final String Plot;
+  final int Rating;
+  final Image Poster;
+
+const Movie({
+  required this.MovieId,
+  required this.Title,
+  required this.Plot,
+  required this.Rating,
+  required this.Poster,
+});
+factory Movie.fromJson(Map<String, dynamic> json){
+  return switch (json) {
+    {'MovieId' : int MovieId,
+    'Title' : String Title,
+    'Plot': String Plot,
+    'Rating': int Rating,
+    'Poster': Image Poster,
+    } =>
+    Movie(
+      MovieId: MovieId,
+      Title: Title,
+      Plot: Plot, 
+      Rating: Rating, 
+      Poster: Poster),
+    _ => throw const FormatException('Failed to load Movie. Retry')
+  };
+}
+}
+
+Future<Movie> fetchMovie() async {
+  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?certification_country=USA&include_adult=true&include_video=true&language=en-US&page=1&primary_release_year=2023&sort_by=popularity.desc'));
+  if (response.statusCode == 200){
+    return Movie.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  } else 
+  {
+    throw const FormatException(' Failed to load Movies. Retry');
+  }
+}
+
 
 /*Intro to State
 State is whatever tools/data you need to rebuild the UI at any moment in time.
