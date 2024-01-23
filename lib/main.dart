@@ -402,7 +402,7 @@ class MyAccountScreen extends StatelessWidget {
   }
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           'My Account',
