@@ -392,14 +392,20 @@ class SeriesOverviewScreen extends StatelessWidget {
   }
 }
 
-class MyAccountScreen extends StatelessWidget {
-  //const MyAccountScreen({super.key});
+class MyAccountScreen extends StatefulWidget {
+  const MyAccountScreen({super.key});
+  //
+  @override
+  State <MyAccountScreen> createState() => _MyAccountScreenState();}
+
+class _MyAccountScreenState extends StatefulWidget{
   late Future<Movie> futureMovie;
   @override
   void initState(){
-    //super.initState();
+    super.initState();
     futureMovie = fetchMovie();
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       //backgroundColor: Colors.black,
@@ -408,11 +414,11 @@ class MyAccountScreen extends StatelessWidget {
           'My Account',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 25,
-      
+            fontSize: 25,      
           ),
         ),
       ),
+      body: Column(children: []),
       
       
         );
@@ -424,9 +430,13 @@ class MyWatchlistScreen extends StatelessWidget {
  @override
  Widget build(BuildContext context){
   return Scaffold(
-    backgroundColor: Colors.black,
-  );
- }
+    //backgroundColor: Colors.black,
+    body: Column(
+    children: [
+    //MovieId:'848326'),
+    ],
+    ),);
+   }
 }
 
 class PirateXchangeScreen extends StatelessWidget {
@@ -449,41 +459,11 @@ class PirateXchangeScreen extends StatelessWidget {
   }
 }
 
-class Movie {
-  final int MovieId;
-  final String Title;
-  final String Plot;
-  final int Rating;
-  final Image Poster;
 
-const Movie({
-  required this.MovieId,
-  required this.Title,
-  required this.Plot,
-  required this.Rating,
-  required this.Poster,
-});
-factory Movie.fromJson(Map<String, dynamic> json){
-  return switch (json) {
-    {'MovieId' : int MovieId,
-    'Title' : String Title,
-    'Plot': String Plot,
-    'Rating': int Rating,
-    'Poster': Image Poster,
-    } =>
-    Movie(
-      MovieId: MovieId,
-      Title: Title,
-      Plot: Plot, 
-      Rating: Rating, 
-      Poster: Poster),
-    _ => throw const FormatException('Failed to load Movie. Retry')
-  };
-}
-}
+
 
 Future<Movie> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?certification_country=USA&include_adult=true&include_video=true&language=en-US&page=1&primary_release_year=2023&sort_by=popularity.desc'));
+  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/changes?page=1'));
   if (response.statusCode == 200){
     return Movie.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   } else 
@@ -491,7 +471,49 @@ Future<Movie> fetchMovie() async {
     throw const FormatException(' Failed to load Movies. Retry');
   }
 }
+class Movie {
+  //final int MovieId;
+  final String Title;
+  //final String Plot;
+  //final int Rating;
+  //final Image Poster;
 
+const Movie({
+  //required this.MovieId,
+  required this.Title,
+  //required this.Plot,
+  //required this.Rating,
+  //required this.Poster,
+});
+factory Movie.fromJson(Map<String, dynamic> json){
+  return switch (json) {
+    {//'Id' : int id,
+    'Title' : String original_title,
+    //'Plot': String overview,
+    //'Rating': int vote_average,
+    //'Released': String release_date,
+    //'Poster': Image Poster,
+    } =>
+    Movie(
+      //MovieId: id,
+      Title: original_title,
+      //Plot: overview, 
+      //Rating: vote_average, 
+           // Poster: Poster
+      ),
+    _ => throw const FormatException('Failed to load Movie. Retry')
+  };
+}
+}
+
+FutureBuilder<Movie>(
+  future: futureMovie,
+  builder: (context, snapshot){
+    if (snapshot.hasData){
+      return Text(snapshot.data!.Title);
+    }
+  },
+)
 
 /*Intro to State
 State is whatever tools/data you need to rebuild the UI at any moment in time.
