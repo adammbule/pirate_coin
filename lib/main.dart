@@ -1,7 +1,13 @@
 
+// ignore_for_file: non_constant_identifier_names
+
+import 'dart:io';
 import 'dart:js';
 import 'dart:convert';
 import 'dart:js_interop_unsafe';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
@@ -182,6 +188,7 @@ class CreateScreen extends StatelessWidget {
         ),
       ),
     );
+    
   }
 }
 
@@ -393,13 +400,16 @@ class SeriesOverviewScreen extends StatelessWidget {
 }
 
 class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({super.key});
-  //
-  @override
-  State <MyAccountScreen> createState() => _MyAccountScreenState();}
+  const MyAccountScreen({Key? key}): super(key: key);
 
-class _MyAccountScreenState extends StatefulWidget{
+  @override
+  _MyAccountScreenState createState() => _MyAccountScreenState();
+  }
+
+class _MyAccountScreenState extends State<MyAccountScreen>{
   late Future<Movie> futureMovie;
+  
+  
   @override
   void initState(){
     super.initState();
@@ -418,10 +428,30 @@ class _MyAccountScreenState extends StatefulWidget{
           ),
         ),
       ),
-      body: Column(children: []),
-      
+      body: Center(
+        child:FutureBuilder<List<Movie>>(
+          future: futureMovie,
+    builder: (context, snapshot){
+    if (snapshot.hasData){
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index){
+          return ListTile(
+            title: Text(snapshot.data![index].Title),
+          );
+        },
+      );
+    }
+    else 
+      return Text('Snapshot Error');
+    
+  }, 
+  ),
+  ),
+     
       
         );
+        
   }
 }
 
@@ -462,58 +492,45 @@ class PirateXchangeScreen extends StatelessWidget {
 
 
 
-Future<Movie> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/changes?page=1'));
+Future<List<Movie>> fetchMovie() async {
+  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
+    headers: {
+    HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
+    'accept': 'application/json',
+
+  });
   if (response.statusCode == 200){
-    return Movie.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    final Future<Movie> data = json.decode(response.body)['results'];
+    // ignore: avoid_types_as_parameter_names
+    return data.map((movieJson) => Movie.fromJson(movieJson)).toList();
   } else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
   }
 }
 class Movie {
-  //final int MovieId;
+  final int MovieId;
   final String Title;
-  //final String Plot;
-  //final int Rating;
+  final String Plot;
+  final int Rating;
   //final Image Poster;
+  Movie({required this.Title, required this.MovieId, required this.Plot, required this.Rating});
+ 
 
-const Movie({
-  //required this.MovieId,
-  required this.Title,
-  //required this.Plot,
-  //required this.Rating,
-  //required this.Poster,
-});
 factory Movie.fromJson(Map<String, dynamic> json){
-  return switch (json) {
-    {//'Id' : int id,
-    'Title' : String original_title,
-    //'Plot': String overview,
-    //'Rating': int vote_average,
-    //'Released': String release_date,
-    //'Poster': Image Poster,
-    } =>
-    Movie(
-      //MovieId: id,
-      Title: original_title,
-      //Plot: overview, 
-      //Rating: vote_average, 
-           // Poster: Poster
-      ),
-    _ => throw const FormatException('Failed to load Movie. Retry')
-  };
+  return Movie(
+    Title: json['original_title'],
+    MovieId: json['id'],
+    Plot: json['overview'],
+    Rating: json['vote_average'],
+    //'Released': String release_date,*/
+  );
+    //throw const FormatException('Failed to load Movie. Retry')
+  
 }
 }
 
-FutureBuilder<Movie>(
-  future: futureMovie,
-  builder: (context, snapshot){
-    if (snapshot.hasData){
-      return Text(snapshot.data!.Title);
-    }
-  },
-)
+
 
 /*Intro to State
 State is whatever tools/data you need to rebuild the UI at any moment in time.
@@ -528,4 +545,5 @@ ChangeNotifier --> You need to call the notifyListeners() anytime the UI changes
 ChangeNotifierProvider provides an instance of changeNotifier to its descendants. Place above the widgets that access it. Multiprovider to provide for more than one class
 Consumer widget build is the only argument - calls the build function. build has the context, ChangeNotifier instance & child.
   --Best practice to put the consumer widget as deep as possible in your widget to avoid rebuilding large chunks of UI due to minor changes on other places.
-Performance testing in flutter*/
+Performance testing in flutter
+TMDB /search, /discover and /find*/
