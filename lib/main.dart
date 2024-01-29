@@ -407,13 +407,13 @@ class MyAccountScreen extends StatefulWidget {
   }
 
 class _MyAccountScreenState extends State<MyAccountScreen>{
-  late Future<Movie> futureMovie;
+  late Future<Movie> futureMovies;
   
   
   @override
   void initState(){
     super.initState();
-    futureMovie = fetchMovie();
+    futureMovies = fetchMovie();
   }
   @override
   Widget build(BuildContext context) {
@@ -430,7 +430,7 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       ),
       body: Center(
         child:FutureBuilder<List<Movie>>(
-          future: futureMovie,
+          future: futureMovies,
     builder: (context, snapshot){
     if (snapshot.hasData){
       return ListView.builder(
@@ -502,7 +502,9 @@ Future<List<Movie>> fetchMovie() async {
   if (response.statusCode == 200){
     final Future<Movie> data = json.decode(response.body)['results'];
     // ignore: avoid_types_as_parameter_names
-    return data.map((movieJson) => Movie.fromJson(movieJson)).toList();
+    List<Movie> movies = data.map((movieJson) => Movie.fromJson(movieJson)).toList();
+
+    return movies;
   } else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
