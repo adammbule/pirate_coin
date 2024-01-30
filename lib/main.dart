@@ -407,7 +407,7 @@ class MyAccountScreen extends StatefulWidget {
   }
 
 class _MyAccountScreenState extends State<MyAccountScreen>{
-  late Future<Movie> futureMovies;
+  late Future<List<Movie>> futureMovies;
   
   
   @override
@@ -415,6 +415,27 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
     super.initState();
     futureMovies = fetchMovie();
   }
+
+  Future<List<Movie>> fetchMovie() async {
+  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
+    headers: {
+    HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
+    'accept': 'application/json',
+
+  });
+  if (response.statusCode == 200){
+    final Future<Movie> data = json.decode(response.body)['results'];
+    // ignore: avoid_types_as_parameter_names
+    // Use map on the list once it's obtained from the JSON response
+    List<Movie> movies = data.map((MovieJson) => Movie.fromJson(MovieJson)).toList();
+
+
+    return movies;
+  } else 
+  {
+    throw const FormatException(' Failed to load Movies. Retry');
+  }
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -430,23 +451,26 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       ),
       body: Center(
         child:FutureBuilder<List<Movie>>(
-          future: futureMovies,
-    builder: (context, snapshot){
-    if (snapshot.hasData){
+  future: futureMovies,
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else if (snapshot.hasData) {
       return ListView.builder(
         itemCount: snapshot.data!.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return ListTile(
             title: Text(snapshot.data![index].Title),
           );
         },
       );
+    } else {
+      return Text('No data');
     }
-    else 
-      return Text('Snapshot Error');
-    
-  }, 
-  ),
+  },
+)
   ),
      
       
@@ -492,24 +516,7 @@ class PirateXchangeScreen extends StatelessWidget {
 
 
 
-Future<List<Movie>> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
-    headers: {
-    HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
-    'accept': 'application/json',
 
-  });
-  if (response.statusCode == 200){
-    final Future<Movie> data = json.decode(response.body)['results'];
-    // ignore: avoid_types_as_parameter_names
-    List<Movie> movies = data.map((movieJson) => Movie.fromJson(movieJson)).toList();
-
-    return movies;
-  } else 
-  {
-    throw const FormatException(' Failed to load Movies. Retry');
-  }
-}
 class Movie {
   final int MovieId;
   final String Title;
