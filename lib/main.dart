@@ -407,13 +407,13 @@ class MyAccountScreen extends StatefulWidget {
   }
 
 class _MyAccountScreenState extends State<MyAccountScreen>{
-  late Future<List<Movie>> futureMovies;
+  late Future<List<Movie>> Movies;
   
   
   @override
   void initState(){
     super.initState();
-    futureMovies = fetchMovie();
+    Movies = fetchMovie();
   }
 
   Future<List<Movie>> fetchMovie() async {
@@ -424,13 +424,12 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
 
   });
   if (response.statusCode == 200){
-    final Future<Movie> data = json.decode(response.body)['results'];
-    // ignore: avoid_types_as_parameter_names
-    // Use map on the list once it's obtained from the JSON response
-    List<Movie> movies = data.map((MovieJson) => Movie.fromJson(MovieJson)).toList();
+    setState(() {
+      Movies = json.decode(response.body)['results'];
+    });
 
 
-    return movies;
+    return Movies;
   } else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
@@ -451,7 +450,7 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       ),
       body: Center(
         child:FutureBuilder<List<Movie>>(
-  future: futureMovies,
+  future: Movies,
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return CircularProgressIndicator();
