@@ -554,4 +554,5 @@ ChangeNotifierProvider provides an instance of changeNotifier to its descendants
 Consumer widget build is the only argument - calls the build function. build has the context, ChangeNotifier instance & child.
   --Best practice to put the consumer widget as deep as possible in your widget to avoid rebuilding large chunks of UI due to minor changes on other places.
 Performance testing in flutter
-TMDB /search, /discover and /find*/
+TMDB /search, /discover and /find
+Remember to setState for Api callbacks*/
