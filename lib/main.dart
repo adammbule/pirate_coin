@@ -26,7 +26,7 @@ void main() {
         '/home': (context) => const HomeScreen(),
         'third': (context) => const TrendingMovieScreen(),
         'fourth': (context) => const MovieOverviewScreen(),
-        '/fifth': (context) =>  MyAccountScreen(),
+        '/fifth': (context) => const MyAccountStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
       },
@@ -398,16 +398,15 @@ class SeriesOverviewScreen extends StatelessWidget {
     );
   }
 }
-class MyAccountStateless extends statelessWidget{
+class MyAccountStateless extends StatelessWidget{
   const MyAccountStateless ({super.key});
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: colors.black,
-      Appbar: Appbar(
-        child: Text('Movies'),
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          ),
       body: MyAccountScreen(),
     );
   }
@@ -420,16 +419,15 @@ class MyAccountScreen extends StatefulWidget {
   }
 
 class _MyAccountScreenState extends State<MyAccountScreen>{
-  late Future<List<Movie>> Movies;
-  
-  
+  List <dynamic> Movies = [];
+    
   @override
   void initState(){
     super.initState();
-    Movies = fetchMovie();
+    fetchMovie();
   }
 
-  Future<List<Movie>> fetchMovie() async {
+  Future<void> fetchMovie() async {
   final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
     headers: {
     HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
@@ -440,54 +438,22 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
     setState(() {
       Movies = json.decode(response.body)['results'];
     });
-
-
-    return Movies;
-  } else 
+} else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
   }
 }
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      //backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(
-          'My Account',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 25,      
-          ),
-        ),
-      ),
-      body: Center(
-        child:FutureBuilder<List<Movie>>(
-  future: Movies,
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator();
-    } else if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    } else if (snapshot.hasData) {
-      return ListView.builder(
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(snapshot.data![index].Title),
-          );
-        },
-      );
-    } else {
-      return Text('No data');
-    }
-  },
-)
-  ),
-     
-      
+  Widget build(BuildContext context){
+    return ListView.builder(
+      itemCount: Movies.length,
+      itemBuilder: (BuildContext context, int index){
+        return ListTile(
+          title: Text(Movies[index]['title']),
+          subtitle: Text(Movies[index]['overview']),
         );
-        
+      }
+    );
   }
 }
 
