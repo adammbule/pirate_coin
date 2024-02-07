@@ -398,7 +398,20 @@ class SeriesOverviewScreen extends StatelessWidget {
     );
   }
 }
+class MyAccountStateless extends statelessWidget{
+  const MyAccountStateless ({super.key});
 
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      backgroundColor: colors.black,
+      Appbar: Appbar(
+        child: Text('Movies'),
+      ),
+      body: MyAccountScreen(),
+    );
+  }
+}
 class MyAccountScreen extends StatefulWidget {
   const MyAccountScreen({Key? key}): super(key: key);
 
