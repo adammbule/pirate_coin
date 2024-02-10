@@ -449,8 +449,11 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       itemCount: Movies.length,
       itemBuilder: (BuildContext context, int index){
         return ListTile(
-          title: Text(Movies[index]['title']),
-          subtitle: Text(Movies[index]['overview']),
+          subtitle: Text(Movies[index]['title']),
+          onTap: () {
+            int MovieId = Movies[index]['id'];
+          },
+
         );
       }
     );
@@ -493,7 +496,7 @@ class PirateXchangeScreen extends StatelessWidget {
 
 
 
-
+//add sort by studio--abc, Netflix, CBS, HBO
 
 class Movie {
   final int MovieId;
