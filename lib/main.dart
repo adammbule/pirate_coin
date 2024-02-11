@@ -29,6 +29,7 @@ void main() {
         '/fifth': (context) => const MyAccountStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
+        '/eighth':(context) => const MovieScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -450,14 +451,85 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       itemBuilder: (BuildContext context, int index){
         return ListTile(
           subtitle: Text(Movies[index]['title']),
-          onTap: () {
-            int MovieId = Movies[index]['id'];
+          onTap: () async {
+            int movieId = Movies[index]['id'];  
+            Navigator.pushNamed(context, '/eighth');
           },
 
         );
       }
     );
   }
+}
+
+class MovieScreen extends StatelessWidget {
+  const MovieScreen ({super.key});
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(),
+      body:MovieDetails() ,
+    );
+  }
+}
+
+class MovieDetails extends StatefulWidget {
+  const MovieDetails ({super.key});
+
+    @override
+  _MovieDetailsState createState () => _MovieDetailsState();
+}
+
+class _MovieDetailsState extends State<MovieDetails> {
+ late Map<String, dynamic> MovieDets;
+ List<dynamic> Movies = [];
+
+  @override
+  void initState(){
+    super.initState();
+    fetchMovieDetails(866398);
+  }
+ 
+
+  Future<Map<String, dynamic>> fetchMovieDetails(int movieId) async {
+    final response = await http.get(
+      Uri.parse('https://api.themoviedb.org/3/movie/$movieId?language=en-US'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk', 
+        'accept': 'application/json',
+      });
+
+        if (response.statusCode == 200){
+          setState(() {
+            MovieDets = json.decode(response.body)['Details'];
+          }); 
+        } else {
+          throw Exception('Failed to load Movie Details');
+        }
+        return{};
+  } 
+
+  
+   @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children:[
+          Text(MovieDets['title'] ?? 'Unknown Title'),
+          Text(MovieDets['overview'] ?? 'Unkown Plot')
+        ],
+      ),
+    
+    );
+    
+
+
+  }
+
 }
 
 class MyWatchlistScreen extends StatelessWidget {
