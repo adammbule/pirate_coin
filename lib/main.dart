@@ -408,7 +408,7 @@ Future<Map<String, dynamic>> fetchMovieDetails(movieId) async {
             MovieDets = json.decode(response.body)['Details'];
           }); 
         } else {
-          throw Exception('Failed to load Movie Details');
+          throw Exception('Failed to load Movie Details./n Tap to try again/n');
         }
         return{};
   } 
