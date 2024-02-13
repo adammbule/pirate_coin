@@ -451,9 +451,14 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
       itemBuilder: (BuildContext context, int index){
         return ListTile(
           subtitle: Text(Movies[index]['title']),
+<<<<<<< HEAD
           onTap: () async {
             int movieId = Movies[index]['id'];  
             Navigator.pushNamed(context, '/eighth');
+=======
+          onTap: () {
+            int MovieId = Movies[index]['id'];
+>>>>>>> ff1fa34 (OnTap_MovieId)
           },
 
         );
