@@ -29,7 +29,7 @@ void main() {
         '/fifth': (context) => const MyAccountStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
-        '/eighth':(context) => const MovieScreen(),
+        //'/eighth':(context) => const MovieScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -439,6 +439,10 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
     setState(() {
       Movies = json.decode(response.body)['results'];
     });
+    for (var movie in Movies){
+      int movieId = movie['id'];
+      await fetchMovieDetails(movieId);
+    }
 } else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
@@ -453,7 +457,9 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
           subtitle: Text(Movies[index]['title']),
           onTap: () async {
             int movieId = Movies[index]['id'];  
-            Navigator.pushNamed(context, '/eighth');
+            Navigator.pushNamed(context, 
+            MaterialPageRoute(
+              builder: (context) => MovieScreen(movieId: movieId),) as String);
           },
 
         );
@@ -462,37 +468,42 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
   }
 }
 
+fetchMovieDetails(int movieId) {
+}
+
 class MovieScreen extends StatelessWidget {
-  const MovieScreen ({super.key});
+  final int movieId;
+  const MovieScreen ({required this.movieId, Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(),
-      body:MovieDetails() ,
+      body:MovieDetails(movieId: movieId),
     );
   }
 }
 
 class MovieDetails extends StatefulWidget {
-  const MovieDetails ({super.key});
+  final int movieId;
+  const MovieDetails ({required this.movieId, Key? key}): super(key: key);
 
     @override
   _MovieDetailsState createState () => _MovieDetailsState();
 }
 
 class _MovieDetailsState extends State<MovieDetails> {
- late Map<String, dynamic> MovieDets;
- List<dynamic> Movies = [];
+ late Map<String, dynamic> MovieDets = {};
+ //List<dynamic> Movies = [];
 
   @override
   void initState(){
     super.initState();
-    fetchMovieDetails(866398);
+    fetchMovieDetails(widget.movieId);
   }
  
 
-  Future<Map<String, dynamic>> fetchMovieDetails(int movieId) async {
+Future<Map<String, dynamic>> fetchMovieDetails(movieId) async {
     final response = await http.get(
       Uri.parse('https://api.themoviedb.org/3/movie/$movieId?language=en-US'),
       headers: {
@@ -515,7 +526,7 @@ class _MovieDetailsState extends State<MovieDetails> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
@@ -551,7 +562,7 @@ class PirateXchangeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 14, 13, 13),
+      //backgroundColor: const Color.fromARGB(255, 14, 13, 13),
       body: const Column(
         children: [
           Text('PirateXchange',
