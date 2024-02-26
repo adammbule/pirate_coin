@@ -10,9 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-//import 'package:http/shujaanet.com/coin.dart' as http;
-
 import 'package:flutter/material.dart';
+//import 'package:http/shujaanet.com/coin.dart' as http;
+import 'package:flutter_application_1/pirateXchange_container.dart';
+import 'package:flutter_application_1/login_container.dart';
+import 'package:flutter_application_1/register_container.dart';
+
+
 
 void main() {
   //defining the function parameters when defining a function
@@ -71,127 +75,7 @@ class StartScreen extends StatelessWidget {
   }
 }
 //change to statefull widgets
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 12, 12, 12),
-      appBar: AppBar(
-        title: const Text('SignUP'),
-      ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const TextField(
-          //controller: _usernameController,
-          decoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Enter Your Email/Username'),
-        ),
-        TextFormField(
-          //controller: _passwordController,
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Enter your Password',
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            //sendTextToAPI(_usernameController.text);
-            Navigator.pushNamed(context, '/home');
-          },
-          child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight:FontWeight.bold, )),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                Color.fromARGB(255, 243, 22, 6)),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            
-            Navigator.pushNamed(context, '/third');
-          },
-          child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 243, 22, 6)),
-          ),
-        )
-      ]),
-    );
-  }
-}
 
-class CreateScreen extends StatelessWidget {
-  //const CreateScreen({super.key});
-
-  bool _isChecked = false;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 129, 129, 129),
-      appBar: AppBar(
-        title: const Text('Member Sign Up'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            TextFormField(
-              //controller: _emailController,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Email',
-                focusColor: Colors.white,
-              ),
-            ),
-            TextFormField(
-              //controller: _FirstPasswordController,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Password',
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                //controller: _secoundPasswordController,
-                border: UnderlineInputBorder(),
-                labelText: 'Repeat Password',
-              ),
-            ),
-            Row(
-              children: [
-                Checkbox(value: _isChecked, onChanged: (bool? value) {}),
-                Text('Accept Our Terms and Conditions.'),
-              ],
-            ),
-            ElevatedButton(
-              // Within the SecondScreen widget
-              onPressed: () {
-                //sendTextToAPI(_emailController.Text);
-                // Navigate back to the first screen by popping the current route
-                // off the stack.
-              },
-              child: const Text('Sign Up'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-            ),
-            Text('Already a member?'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/second');
-              },
-              child: Text('Login'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-    
-  }
-}
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -575,65 +459,7 @@ class PirateXchangeScreen extends StatelessWidget {
   }
 
 }
-class PirateXchangeMovies extends StatefulWidget {
-  const PirateXchangeMovies ({Key? key}): super(key: key);
 
-  @override
-  _PirateXchangeMoviesState createState () => _PirateXchangeMoviesState();
-}
-
-class _PirateXchangeMoviesState extends State<PirateXchangeMovies> {
-  late Map<String, dynamic>? LatestMovies = {};
- //List<dynamic> Movies = [];
-
-  @override
-  void initState(){
-    super.initState();
-    fetchMovieDetails();
-  }
- 
-
-Future<Map<String, dynamic>> fetchMovieDetails() async {
-    final response = await http.get(
-      Uri.parse('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk', 
-        'accept': 'application/json',
-      });
-
-        if (response.statusCode == 200){
-          setState(() {
-            LatestMovies = json.decode(response.body)['Details'];
-          }); 
-        } else {
-          throw Exception('Failed to load Movie Details');
-        }
-        return{};
-  } 
-
-  
-   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(),
-      //backgroundColor: Colors.black,
-      body: LatestMovies!= null
-      ? GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
-        children: [       
-          Text(LatestMovies?['title'] ?? 'Unknown Title'),          
-         ]
-
-      )
-        : Center(child:  CircularProgressIndicator(),)
-      );
-    
-    
-    }
-
-}
 
 
 
