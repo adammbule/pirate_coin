@@ -10,9 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-//import 'package:http/shujaanet.com/coin.dart' as http;
-
 import 'package:flutter/material.dart';
+//import 'package:http/shujaanet.com/coin.dart' as http;
+import 'package:flutter_application_1/pirateXchange_container.dart';
+import 'package:flutter_application_1/login_container.dart';
+import 'package:flutter_application_1/register_container.dart';
+
+
 
 void main() {
   //defining the function parameters when defining a function
@@ -29,7 +33,7 @@ void main() {
         '/fifth': (context) => const MyAccountStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
-        '/eighth':(context) => const MovieScreen(),
+        //'/eighth':(context) => const MovieScreen(),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -71,127 +75,7 @@ class StartScreen extends StatelessWidget {
   }
 }
 //change to statefull widgets
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 12, 12, 12),
-      appBar: AppBar(
-        title: const Text('SignUP'),
-      ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const TextField(
-          //controller: _usernameController,
-          decoration: InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Enter Your Email/Username'),
-        ),
-        TextFormField(
-          //controller: _passwordController,
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Enter your Password',
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            //sendTextToAPI(_usernameController.text);
-            Navigator.pushNamed(context, '/home');
-          },
-          child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight:FontWeight.bold, )),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                Color.fromARGB(255, 243, 22, 6)),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            
-            Navigator.pushNamed(context, '/third');
-          },
-          child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                const Color.fromARGB(255, 243, 22, 6)),
-          ),
-        )
-      ]),
-    );
-  }
-}
 
-class CreateScreen extends StatelessWidget {
-  //const CreateScreen({super.key});
-
-  bool _isChecked = false;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 129, 129, 129),
-      appBar: AppBar(
-        title: const Text('Member Sign Up'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            TextFormField(
-              //controller: _emailController,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Email',
-                focusColor: Colors.white,
-              ),
-            ),
-            TextFormField(
-              //controller: _FirstPasswordController,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Password',
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                //controller: _secoundPasswordController,
-                border: UnderlineInputBorder(),
-                labelText: 'Repeat Password',
-              ),
-            ),
-            Row(
-              children: [
-                Checkbox(value: _isChecked, onChanged: (bool? value) {}),
-                Text('Accept Our Terms and Conditions.'),
-              ],
-            ),
-            ElevatedButton(
-              // Within the SecondScreen widget
-              onPressed: () {
-                //sendTextToAPI(_emailController.Text);
-                // Navigate back to the first screen by popping the current route
-                // off the stack.
-              },
-              child: const Text('Sign Up'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-            ),
-            Text('Already a member?'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/second');
-              },
-              child: Text('Login'),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-    
-  }
-}
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -394,6 +278,14 @@ class SeriesOverviewScreen extends StatelessWidget {
             width: 600,
             fit: BoxFit.contain,
           ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/sixth');
+            },
+            child: const Text('Play'),)
         ],
       ),
     );
@@ -439,6 +331,10 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
     setState(() {
       Movies = json.decode(response.body)['results'];
     });
+    for (var movie in Movies){
+      int movieId = movie['id'];
+      await fetchMovieDetails(movieId);
+    }
 } else 
   {
     throw const FormatException(' Failed to load Movies. Retry');
@@ -453,7 +349,9 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
           subtitle: Text(Movies[index]['title']),
           onTap: () async {
             int movieId = Movies[index]['id'];  
-            Navigator.pushNamed(context, '/eighth');
+            Navigator.pushNamed(context, 
+            MaterialPageRoute(
+              builder: (context) => MovieScreen(movieId: movieId),) as String);
           },
 
         );
@@ -462,37 +360,42 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
   }
 }
 
+fetchMovieDetails(int movieId) {
+}
+
 class MovieScreen extends StatelessWidget {
-  const MovieScreen ({super.key});
+  final int movieId;
+  const MovieScreen ({required this.movieId, Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(),
-      body:MovieDetails() ,
+      body:MovieDetails(movieId: movieId),
     );
   }
 }
 
 class MovieDetails extends StatefulWidget {
-  const MovieDetails ({super.key});
+  final int movieId;
+  const MovieDetails ({required this.movieId, Key? key}): super(key: key);
 
     @override
   _MovieDetailsState createState () => _MovieDetailsState();
 }
 
 class _MovieDetailsState extends State<MovieDetails> {
- late Map<String, dynamic> MovieDets;
- List<dynamic> Movies = [];
+ late Map<String, dynamic> MovieDets = {};
+ //List<dynamic> Movies = [];
 
   @override
   void initState(){
     super.initState();
-    fetchMovieDetails(866398);
+    fetchMovieDetails(widget.movieId);
   }
  
 
-  Future<Map<String, dynamic>> fetchMovieDetails(int movieId) async {
+Future<Map<String, dynamic>> fetchMovieDetails(movieId) async {
     final response = await http.get(
       Uri.parse('https://api.themoviedb.org/3/movie/$movieId?language=en-US'),
       headers: {
@@ -515,7 +418,7 @@ class _MovieDetailsState extends State<MovieDetails> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
@@ -545,26 +448,18 @@ class MyWatchlistScreen extends StatelessWidget {
     ),);
    }
 }
-
 class PirateXchangeScreen extends StatelessWidget {
   const PirateXchangeScreen ({super.key});
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 14, 13, 13),
-      body: const Column(
-        children: [
-          Text('PirateXchange',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 30,
-      ), 
-       ),
-        ],
-      ),
+      backgroundColor: Colors.black,
+      body: PirateXchangeMovies(),
     );
   }
+
 }
+
 
 
 
