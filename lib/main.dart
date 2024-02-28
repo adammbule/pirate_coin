@@ -15,6 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pirateXchange_container.dart';
 import 'package:flutter_application_1/login_container.dart';
 import 'package:flutter_application_1/register_container.dart';
+import 'package:flutter_application_1/trendingmovie_container.dart';
+import 'package:flutter_application_1/startscreen_container.dart';
+
 
 
 
@@ -39,41 +42,7 @@ void main() {
   ); //calling the function arguments when calling a function
 }
 
-class StartScreen extends StatelessWidget {
-  const StartScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 13, 29, 37),
-      body: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Hello  World !!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28.5,
-              ),
-            ),
-          ),
-          ElevatedButton(
-            // Within the `FirstScreen` widget
-            onPressed: () {
-              // Navigate to the second screen using a named route.
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ));
-            },
-            child: const Text('Start'),
-          ),
-        ]),
-      ), //class
-    );
-  }
-}
+
 //change to statefull widgets
 
 
@@ -291,8 +260,8 @@ class SeriesOverviewScreen extends StatelessWidget {
     );
   }
 }
-class MyAccountStateless extends StatelessWidget{
-  const MyAccountStateless ({super.key});
+class TrendingMovieStateless extends StatelessWidget{
+  const TrendingMovieStateless ({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -300,68 +269,11 @@ class MyAccountStateless extends StatelessWidget{
       backgroundColor: Colors.white,
       appBar: AppBar(
           ),
-      body: MyAccountScreen(),
-    );
-  }
-}
-class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({Key? key}): super(key: key);
-
-  @override
-  _MyAccountScreenState createState() => _MyAccountScreenState();
-  }
-
-class _MyAccountScreenState extends State<MyAccountScreen>{
-  List <dynamic> Movies = [];
-    
-  @override
-  void initState(){
-    super.initState();
-    fetchMovie();
-  }
-
-  Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
-    headers: {
-    HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
-    'accept': 'application/json',
-
-  });
-  if (response.statusCode == 200){
-    setState(() {
-      Movies = json.decode(response.body)['results'];
-    });
-    for (var movie in Movies){
-      int movieId = movie['id'];
-      await fetchMovieDetails(movieId);
-    }
-} else 
-  {
-    throw const FormatException(' Failed to load Movies. Retry');
-  }
-}
-  @override
-  Widget build(BuildContext context){
-    return ListView.builder(
-      itemCount: Movies.length,
-      itemBuilder: (BuildContext context, int index){
-        return ListTile(
-          subtitle: Text(Movies[index]['title']),
-          onTap: () async {
-            int movieId = Movies[index]['id'];  
-            Navigator.pushNamed(context, 
-            MaterialPageRoute(
-              builder: (context) => MovieScreen(movieId: movieId),) as String);
-          },
-
-        );
-      }
+      body: TrendingMovieScreen(),
     );
   }
 }
 
-fetchMovieDetails(int movieId) {
-}
 
 class MovieScreen extends StatelessWidget {
   final int movieId;
