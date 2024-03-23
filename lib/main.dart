@@ -2,21 +2,15 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:io';
-import 'dart:js';
 import 'dart:convert';
-import 'dart:js_interop_unsafe';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
 import 'package:flutter_application_1/pirateXchange_container.dart';
 import 'package:flutter_application_1/login_container.dart';
 import 'package:flutter_application_1/register_container.dart';
-import 'package:flutter_application_1/trendingmovie_container.dart';
 import 'package:flutter_application_1/startscreen_container.dart';
+import 'package:flutter_application_1/trendingmovie_container.dart';
 
 
 
@@ -29,11 +23,11 @@ void main() {
       routes: {
         '/': (context) => const StartScreen(),
         '/second': (context) => const LoginScreen(),
-        '/third': (context) => CreateScreen(),
+        '/third': (context) => const CreateScreen(),
         '/home': (context) => const HomeScreen(),
         'third': (context) => const TrendingMovieScreen(),
         'fourth': (context) => const MovieOverviewScreen(),
-        '/fifth': (context) => const MyAccountStateless(),
+        '/fifth': (context) => const TrendingMovieStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
         //'/eighth':(context) => const MovieScreen(),
@@ -56,7 +50,7 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-          backgroundColor: Color.fromARGB(255, 15, 15, 15),
+          backgroundColor: const Color.fromARGB(255, 15, 15, 15),
           appBar: AppBar(
             title: const Text(title),
           ),
@@ -79,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: Image.asset('images/madmax.jpg'),
                   ),
-                  Text('Movies',
+                  const Text('Movies',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -99,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: Image.asset('images/hotd.jpg'),
                     ),
-                    Text('Series',
+                    const Text('Series',
                     style: TextStyle(color: Colors.white, fontSize: 25,))
                   ],
                 )),
@@ -116,7 +110,7 @@ class TrendingMovieScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         appBar: AppBar(
           title: const Text(title),
         ),
@@ -172,17 +166,17 @@ class MovieOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       body: Column(
         children: [
           Image.asset(//place images in placeholders eventually
-            'Images/madmax.jpg',
+            'images/madmax.jpg',
             height: 300,
             width: 800,
             //fit:BoxFit.fitWidth,
             
           ),
-          Text(
+          const Text(
             'Mad Max:Fury Road',
             style: TextStyle(
               color: Colors.white,
@@ -191,7 +185,7 @@ class MovieOverviewScreen extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/fifth');
@@ -199,12 +193,12 @@ class MovieOverviewScreen extends StatelessWidget {
             },
             child: const Text('Play'), //insert clickable icon.
           ),
-          Text('Mad Max',
+          const Text('Mad Max',
           style: TextStyle(
         color: Colors.white,
         fontSize: 20,
       ),),
-          Text('Sand, Dystopia, Wild cars, Action!!!', 
+          const Text('Sand, Dystopia, Wild cars, Action!!!', 
           style: TextStyle(
         color: Colors.white,
         fontSize: 20,
@@ -234,7 +228,7 @@ class SeriesOverviewScreen extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/fifth');
@@ -242,14 +236,14 @@ class SeriesOverviewScreen extends StatelessWidget {
             child: const Text('Play'), //insert clickable icon.
           ),
           Image.asset(
-            'Images/hotd.jpg',
+            'images/hotd.jpg',
             height: 452,
             width: 600,
             fit: BoxFit.contain,
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
+              shape: const CircleBorder(),
             ),
             onPressed: () {
               Navigator.pushNamed(context, '/sixth');
@@ -269,89 +263,20 @@ class TrendingMovieStateless extends StatelessWidget{
       backgroundColor: Colors.white,
       appBar: AppBar(
           ),
-      body: TrendingMovieScreen(),
+      body: const TrendingMovieScreenfinal(),
     );
   }
 }
 
 
-class MovieScreen extends StatelessWidget {
-  final int movieId;
-  const MovieScreen ({required this.movieId, Key? key}): super(key: key);
-
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(),
-      body:MovieDetails(movieId: movieId),
-    );
-  }
-}
-
-class MovieDetails extends StatefulWidget {
-  final int movieId;
-  const MovieDetails ({required this.movieId, Key? key}): super(key: key);
-
-    @override
-  _MovieDetailsState createState () => _MovieDetailsState();
-}
-
-class _MovieDetailsState extends State<MovieDetails> {
- late Map<String, dynamic> MovieDets = {};
- //List<dynamic> Movies = [];
-
-  @override
-  void initState(){
-    super.initState();
-    fetchMovieDetails(widget.movieId);
-  }
- 
-
-Future<Map<String, dynamic>> fetchMovieDetails(movieId) async {
-    final response = await http.get(
-      Uri.parse('https://api.themoviedb.org/3/movie/$movieId?language=en-US'),
-      headers: {
-        HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk', 
-        'accept': 'application/json',
-      });
-
-        if (response.statusCode == 200){
-          setState(() {
-            MovieDets = json.decode(response.body)['Details'];
-          }); 
-        } else {
-          throw Exception('Failed to load Movie Details./n Tap to try again/n');
-        }
-        return{};
-  } 
-
-  
-   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      //backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children:[
-          Text(MovieDets['title'] ?? 'Unknown Title'),
-          Text(MovieDets['overview'] ?? 'Unkown Plot')
-        ],
-      ),
-    
-    );
-    
 
 
-  }
-
-}
 
 class MyWatchlistScreen extends StatelessWidget {
  const MyWatchlistScreen ({super.key});
  @override
  Widget build(BuildContext context){
-  return Scaffold(
+  return const Scaffold(
     //backgroundColor: Colors.black,
     body: Column(
     children: [
@@ -364,7 +289,7 @@ class PirateXchangeScreen extends StatelessWidget {
   const PirateXchangeScreen ({super.key});
   @override
   Widget build(BuildContext context){
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black,
       body: PirateXchangeMovies(),
     );
@@ -416,4 +341,10 @@ Consumer widget build is the only argument - calls the build function. build has
   --Best practice to put the consumer widget as deep as possible in your widget to avoid rebuilding large chunks of UI due to minor changes on other places.
 Performance testing in flutter
 TMDB /search, /discover and /find
-Remember to setState for Api callbacks*/
+Remember to setState for Api callbacks
+BLOC VS CUBIT
+Bloc extends a cubit
+A cubit uses functions to receive input from UI 
+while Bloc uses events to receive input from UI
+Blocprovider, bloclistener & blocbuilder
+Streams are interactions in the app needed to emit changes in code.*/
