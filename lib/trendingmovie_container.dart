@@ -53,7 +53,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
         return GestureDetector(
           //subtitle: Text(Movies[index]['title']),
           onTap: () async {
-            int movieId = Movies[index]['id'];  
+            //int MovieId = Movies[index]['id'];  
             Navigator.pushNamed(context, 
             MaterialPageRoute(
               builder: (context) => const MovieScreen(),) as String);
@@ -64,7 +64,11 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(
-                child: Image.network('https://api.themoviedb.org/3/movie/1011985/images'),
+                child: Image.network('https://api.themoviedb.org/3/movie/1011985?language=en-US',
+                headers: {
+                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
+                  'accept': 'application/json'
+                },),
               ),
               Text(
                   Movies[index]['title'],
@@ -74,6 +78,11 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+              Text('${Movies[index] ['id']}',
+                    textAlign:  TextAlign.left,
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),)
                 //fetch movie images
         ]),
           ),
