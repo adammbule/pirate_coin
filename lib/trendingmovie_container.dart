@@ -64,11 +64,11 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(
-                child: Image.network('https://api.themoviedb.org/3/movie/1011985?language=en-US',
-                headers: {
+                child: Image.network('https://image.tmdb.org/t/p/original/6udTTkU8AJhV8WPJYPHfew48SPU.jpg'//https://api.themoviedb.org/3/movie/1011985?language=en-US,
+                /*headers: {
                   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
                   'accept': 'application/json'
-                },),
+                },*/),
               ),
               Text(
                   Movies[index]['title'],
