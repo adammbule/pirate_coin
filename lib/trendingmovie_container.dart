@@ -76,12 +76,16 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+<<<<<<< HEAD
               Text('${Movies[index] ['id']}',
                     textAlign:  TextAlign.left,
                     style: const TextStyle(
                       fontSize: 15,
                     ),)
                 //fetch movie images
+=======
+                         //fetch movie images
+>>>>>>> 36ee769db0433245e0a1caedcbd6e58534da51d9
         ]),
           ),
 
