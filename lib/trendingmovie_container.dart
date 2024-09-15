@@ -32,6 +32,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
     });
     for (var movie in Movies){
       int movieId = movie['id'];
+      
       await fetchMovieDetails(movieId);
     }
 } else 
@@ -50,37 +51,34 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
         ),
       itemCount: Movies.length,
       itemBuilder: (BuildContext context, int index){
+        String movieId = '${Movies[index] ['id']}';
+        String moviePoster = '${Movies[index] ['backdrop_path']}';
         return GestureDetector(
           //subtitle: Text(Movies[index]['title']),
-          onTap: () async {
-            //int MovieId = Movies[index]['id'];  
-            Navigator.pushNamed(context, 
+          onTap: () async => Navigator.pushNamed(context, 
             MaterialPageRoute(
-              builder: (context) => const MovieScreen(),) as String);
-          },
+              builder: (context) => const MovieScreen(),) as String),
           child: Card(
             elevation: 5.0,
-            child: Padding(padding: EdgeInsets.all(8.0),
+            child: Padding(padding: const EdgeInsets.all(8.0),
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(
-                child: Image.network('https://api.themoviedb.org/3/movie/1011985?language=en-US',
-                headers: {
-                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
-                  'accept': 'application/json'
-                },),
+                child: Image.network('https://image.tmdb.org/t/p/original$moviePoster', //https://api.themoviedb.org/3/movie/{movie_id}/images, or https://api.themoviedb.org/3/movie/$movieId?language=en-US
+                                ),
+
               ),
               Text(
                   Movies[index]['title'],
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               Text('${Movies[index] ['id']}',
                     textAlign:  TextAlign.left,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
                     ),)
                 //fetch movie images
@@ -104,7 +102,7 @@ class MovieScreen extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(),
-      body:MovieDetails(),
+      body:const MovieDetails(),
     );
   }
 }

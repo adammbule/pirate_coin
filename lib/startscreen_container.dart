@@ -1,13 +1,6 @@
-import 'dart:io';
-import 'dart:js';
-import 'dart:convert';
-import 'dart:js_interop_unsafe';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_application_1/login_container.dart';
+
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -34,7 +27,7 @@ class StartScreen extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
+                    builder: (context) => const LoginScreen(),
                   ));
             },
             child: const Text('Start'),

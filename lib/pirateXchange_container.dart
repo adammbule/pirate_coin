@@ -1,19 +1,12 @@
 import 'dart:io';
-import 'dart:js';
 import 'dart:convert';
-import 'dart:js_interop_unsafe';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
-import 'package:flutter_application_1/pirateXchange_container.dart';
 
-import 'package:flutter/material.dart';
 
 class PirateXchangeMovies extends StatefulWidget {
-  const PirateXchangeMovies ({Key? key}): super(key: key);
+  const PirateXchangeMovies ({super.key});
 
   @override
   _PirateXchangeMoviesState createState () => _PirateXchangeMoviesState();
@@ -58,13 +51,13 @@ Future<Map<String, dynamic>> fetchMovieDetails() async {
       body: LatestMovies!= null
       ? GridView.count(
         crossAxisCount: 2,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [       
           Text(LatestMovies?['title'] ?? 'Unknown Title'),          
          ]
 
       )
-        : Center(child:  CircularProgressIndicator(),)
+        : const Center(child:  CircularProgressIndicator(),)
       );
     
     

@@ -1,10 +1,7 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 //import 'package:http/shujaanet.com/coin.dart' as http;
 import 'package:flutter_application_1/pirateXchange_container.dart';
 import 'package:flutter_application_1/login_container.dart';
