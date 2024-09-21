@@ -2,6 +2,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/movie_details.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
 import 'package:flutter_application_1/pirateXchange_container.dart';
 import 'package:flutter_application_1/login_container.dart';
@@ -27,7 +28,7 @@ void main() {
         '/fifth': (context) => const TrendingMovieStateless(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
-        //'/eighth':(context) => const MovieScreen(),
+        '/eighth':(context) => MovieDetailsScreen(movieId: 533535,),
       },
     ),
   ); //calling the function arguments when calling a function

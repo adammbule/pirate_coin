@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/movie_details.dart';
 import 'package:http/http.dart' as http;
 
 class TrendingMovieScreenfinal extends StatefulWidget {
@@ -51,13 +52,17 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
         ),
       itemCount: Movies.length,
       itemBuilder: (BuildContext context, int index){
-        String movieId = '${Movies[index] ['id']}';
+        int movieId = int.parse('${Movies[index] ['id']}');
         String moviePoster = '${Movies[index] ['poster_path']}';
         return GestureDetector(
-          //subtitle: Text(Movies[index]['title']),
-          onTap: () async => Navigator.pushNamed(context, 
-            MaterialPageRoute(
-              builder: (context) => const MovieScreen(),) as String),
+  onTap: () async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsScreen(movieId: movieId),  // Pass the movieId as an argument
+      ),
+    );
+  },
           child: Card(
             elevation: 5.0,
             child: Padding(padding: const EdgeInsets.all(8.0),
@@ -80,7 +85,8 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
                     textAlign:  TextAlign.left,
                     style: const TextStyle(
                       fontSize: 15,
-                    ),)
+                    ),
+                    )
                 //fetch movie images
         ]),
           ),
