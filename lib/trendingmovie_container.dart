@@ -52,7 +52,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
       itemCount: Movies.length,
       itemBuilder: (BuildContext context, int index){
         String movieId = '${Movies[index] ['id']}';
-        String moviePoster = '${Movies[index] ['backdrop_path']}';
+        String moviePoster = '${Movies[index] ['poster_path']}';
         return GestureDetector(
           //subtitle: Text(Movies[index]['title']),
           onTap: () async => Navigator.pushNamed(context, 
@@ -76,16 +76,12 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-<<<<<<< HEAD
               Text('${Movies[index] ['id']}',
                     textAlign:  TextAlign.left,
                     style: const TextStyle(
                       fontSize: 15,
                     ),)
                 //fetch movie images
-=======
-                         //fetch movie images
->>>>>>> 36ee769db0433245e0a1caedcbd6e58534da51d9
         ]),
           ),
 
