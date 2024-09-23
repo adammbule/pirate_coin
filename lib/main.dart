@@ -7,8 +7,10 @@ import 'package:flutter_application_1/movie_details.dart';
 import 'package:flutter_application_1/pirateXchange_container.dart';
 import 'package:flutter_application_1/login_container.dart';
 import 'package:flutter_application_1/register_container.dart';
+import 'package:flutter_application_1/series_details.dart';
 import 'package:flutter_application_1/startscreen_container.dart';
 import 'package:flutter_application_1/trendingmovie_container.dart';
+import 'package:flutter_application_1/trendingseries_container.dart';
 
 
 
@@ -29,6 +31,7 @@ void main() {
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
         '/eighth':(context) => MovieDetailsScreen(movieId: 533535,),
+        '/ninth':(context) => SeriesDetailsScreen(seriesId: 498,),
       },
     ),
   ); //calling the function arguments when calling a function
@@ -84,7 +87,7 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const TrendingMovieScreenfinal()));
+                          builder: (context) => const TrendingSeriesScreenfinal()));
                 },
                 child: Column(
                   children: [
@@ -229,7 +232,7 @@ class SeriesOverviewScreen extends StatelessWidget {
               shape: const CircleBorder(),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/fifth');
+              Navigator.pushNamed(context, '/ninth');
             },
             child: const Text('Play'), //insert clickable icon.
           ),
