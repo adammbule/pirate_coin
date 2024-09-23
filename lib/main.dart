@@ -25,7 +25,7 @@ void main() {
         '/home': (context) => const HomeScreen(),
         'third': (context) => const TrendingMovieScreen(),
         'fourth': (context) => const MovieOverviewScreen(),
-        '/fifth': (context) => const TrendingMovieStateless(),
+        '/fifth': (context) => const TrendingMovieScreenfinal(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
         '/eighth':(context) => MovieDetailsScreen(movieId: 533535,),
@@ -64,12 +64,12 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => const MovieOverviewScreen())));
+                        builder: ((context) => const TrendingMovieScreenfinal())));
               },
               child: Column(
                 children: [
                   Expanded(
-                    child: Image.asset('images/madmax.jpg'),
+                    child: Image.asset('lib/madmax.jpg'),
                   ),
                   const Text('Movies',
                   style: TextStyle(
@@ -84,12 +84,12 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SeriesOverviewScreen()));
+                          builder: (context) => const TrendingMovieScreenfinal()));
                 },
                 child: Column(
                   children: [
                     Expanded(
-                      child: Image.asset('images/hotd.jpg'),
+                      child: Image.asset('lib/hotd.jpg'),
                     ),
                     const Text('Series',
                     style: TextStyle(color: Colors.white, fontSize: 25,))
@@ -168,7 +168,7 @@ class MovieOverviewScreen extends StatelessWidget {
       body: Column(
         children: [
           Image.asset(//place images in placeholders eventually
-            'images/madmax.jpg',
+            'lib/madmax.jpg',
             height: 300,
             width: 800,
             //fit:BoxFit.fitWidth,
@@ -234,7 +234,7 @@ class SeriesOverviewScreen extends StatelessWidget {
             child: const Text('Play'), //insert clickable icon.
           ),
           Image.asset(
-            'images/hotd.jpg',
+            'lib/hotd.jpg',
             height: 452,
             width: 600,
             fit: BoxFit.contain,

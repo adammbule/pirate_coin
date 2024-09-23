@@ -13,6 +13,8 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   String moviePlot = '';
+  String movieTitle = '';
+  String releaseYear = '';
   
   // Fetch movie details
   Future<void> fetchSpecificMovieDetails() async {
@@ -29,6 +31,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         var moviedata = json.decode(response.body);
         setState(() {
           moviePlot = moviedata['overview'];  // Update the moviePlot in the state
+          movieTitle = moviedata['original_title'];
+          releaseYear = moviedata['release_date'];
         });
       } else {
         throw Exception('Failed to load movie data');
@@ -54,7 +58,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       body: Center(
         child: moviePlot.isEmpty 
             ? CircularProgressIndicator()  // Show a loading spinner while fetching data
-            : Text('Movie Plot: $moviePlot'),  // Show the fetched movie plot
+            : Column(
+              children: [Text('Movie Title: $movieTitle'),
+              Text('Released: $releaseYear'),
+              Text('Movie Plot: $moviePlot')] ) // Show the fetched movie plot
+           
       ),
     );
   }
