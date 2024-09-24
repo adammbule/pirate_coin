@@ -7,7 +7,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 12, 12, 12),
       appBar: AppBar(
-        title: const Text('SignUP'),
+        title: const Text('Account'),
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         const TextField(
