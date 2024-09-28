@@ -36,7 +36,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
         var seriesdata = json.decode(response.body);
         setState(() {
           seriesPlot = seriesdata['_id'];  // Update the moviePlot in the state
-          seriesTitle = seriesdata['_id'];
+          seriesTitle = seriesdata['name'];
           releaseYear = seriesdata['_id'];
           seriesEpisodeId = seriesdata['_id'];
           //showImage = seriesdata['_id'];
@@ -58,24 +58,34 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         title: Text('Tv Show Details'),
       ),
       body: Center(
-        child: seriesPlot.isEmpty 
+        child: episodes.isEmpty 
             ? CircularProgressIndicator()  // Show a loading spinner while fetching data
-            : ListView(
-              children: [Text('Movie Title: $seriesTitle'),
-              Text('Released: $releaseYear'),
-              Text('Show Plot: $seriesPlot'),
-              Text('Series Episode Id: $seriesEpisodeId')
-              /*Expanded(
-                child: Image.network('https://image.tmdb.org/t/p/original$showImage', //https://api.themoviedb.org/3/movie/{movie_id}/images, or https://api.themoviedb.org/3/movie/$movieId?language=en-US
-                                ),
+            : ListView.builder(
+  shrinkWrap: true,
+  physics: NeverScrollableScrollPhysics(),
+  itemCount: episodes.length,
+  itemBuilder: (context, index) {
+    // Extract the episode object from the list at the given index
+    var episode = episodes[index]; 
 
-              ),*/] ) // Show the fetched movie plot
+    // Access the episode name and other properties from the episode object
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      child: ListTile(
+        // Correctly access the episode name here
+        title: Text('Episode ${episode['episode_number']}: ${episode['name']}'),
+        subtitle: Text(episode['overview']),
+      ),
+    );
+  },
+)// Show the fetched movie plot
            
       ),
     );
