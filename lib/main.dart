@@ -30,8 +30,8 @@ void main() {
         '/fifth': (context) => const TrendingMovieScreenfinal(),
         '/sixth': (context) => const PirateXchangeScreen(),
         '/seven':(context) => const MyWatchlistScreen(),
-        '/eighth':(context) => MovieDetailsScreen(movieId: 533535,),
-        '/ninth':(context) => SeriesDetailsScreen(seriesId: 498,),
+        '/eighth':(context) => MovieDetailsScreen(movieId: 0,),
+        '/ninth':(context) => SeriesDetailsScreen(seriesId: 0,),
       },
     ),
   ); //calling the function arguments when calling a function
