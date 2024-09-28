@@ -15,6 +15,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
   String seriesPlot = '';
   String seriesTitle = '';
   String releaseYear = '';
+  String showImage = '';
   
   // Fetch movie details
   Future<void> fetchSpecificSeriesDetails() async {
@@ -33,6 +34,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
           seriesPlot = seriesdata['overview'];  // Update the moviePlot in the state
           seriesTitle = seriesdata['original_title'];
           releaseYear = seriesdata['release_date'];
+          showImage = seriesdata['poster_path'];
         });
       } else {
         throw Exception('Failed to load movie data');
@@ -53,7 +55,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text('Movie Details'),
+        title: Text('Tv Show Details'),
       ),
       body: Center(
         child: seriesPlot.isEmpty 
@@ -61,7 +63,12 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
             : Column(
               children: [Text('Movie Title: $seriesTitle'),
               Text('Released: $releaseYear'),
-              Text('Movie Plot: $seriesPlot')] ) // Show the fetched movie plot
+              Text('Movie Plot: $seriesPlot'),
+              Expanded(
+                child: Image.network('https://image.tmdb.org/t/p/original$showImage', //https://api.themoviedb.org/3/movie/{movie_id}/images, or https://api.themoviedb.org/3/movie/$movieId?language=en-US
+                                ),
+
+              ),] ) // Show the fetched movie plot
            
       ),
     );
