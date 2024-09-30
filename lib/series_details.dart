@@ -39,7 +39,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
           seriesTitle = seriesdata['name'];
           releaseYear = seriesdata['_id'];
           seriesEpisodeId = seriesdata['_id'];
-          //showImage = seriesdata['_id'];
+          showImage = seriesdata['poster_path'];
           episodes = seriesdata['episodes'];
         });
       } else {
@@ -62,26 +62,26 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text('Tv Show Details'),
+        title: Text('$seriesTitle'),
       ),
       body: Center(
         child: episodes.isEmpty 
             ? CircularProgressIndicator()  // Show a loading spinner while fetching data
             : ListView.builder(
-  shrinkWrap: true,
-  physics: NeverScrollableScrollPhysics(),
-  itemCount: episodes.length,
-  itemBuilder: (context, index) {
-    // Extract the episode object from the list at the given index
-    var episode = episodes[index]; 
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: episodes.length,
+                  itemBuilder: (context, index) {
+                    // Extract the episode object from the list at the given index
+                  var episode = episodes[index]; 
 
     // Access the episode name and other properties from the episode object
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 8),
+                child: ListTile(
         // Correctly access the episode name here
-        title: Text('Episode ${episode['episode_number']}: ${episode['name']}'),
-        subtitle: Text(episode['overview']),
+                title: Text('Episode ${episode['episode_number']}: ${episode['name']}'),
+                subtitle: Text(episode['overview']),
       ),
     );
   },
