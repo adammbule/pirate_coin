@@ -1,4 +1,3 @@
-import 'package:flutter_application_1/series_details.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class SeriesDetailsEvent extends Equatable {

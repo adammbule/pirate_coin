@@ -48,6 +48,7 @@ CREATE TABLE seriesepisodes (
     title VARCHAR(100).
     release_date DATE,
     bloc_url VARCHAR (50),
+    seasonID VARCHAR (50),
     seriesid NUMBER,
     CONSTRAINT episodes_pk PRIMARY KEY (episode_id)
 );

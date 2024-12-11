@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
 
-  MovieDetailsScreen({required this.movieId});
+  const MovieDetailsScreen({super.key, required this.movieId});
 
   @override
   _MovieDetailsScreenState createState() => _MovieDetailsScreenState();
@@ -20,7 +20,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   Future<void> fetchSpecificMovieDetails() async {
     final url = Uri.parse('https://api.themoviedb.org/3/movie/${widget.movieId}?language=en-US');
     final headers = {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWIyMjM2YWY4ZTc2NjBmMDgwYjFkMjNiNmNlZDY4YiIsInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5gNpkiO9urZ9rBmAuGqdATmCR5LVPVm1zB-sx4lofZk',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTcwNTk0MjA4Ny45NDU5OTk5LCJzdWIiOiI2NWFlOWM0NzNlMmVjODAwZWJmMDA3YTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.m-rvfyxU5wUwRy8Z_jypbh2zfqubxpN_OuS8GVaNE48',
       'accept': 'application/json',
     };
 
@@ -53,11 +53,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: Text('Movie Details'),
+        title: const Text('Movie Details'),
       ),
       body: Center(
         child: moviePlot.isEmpty 
-            ? CircularProgressIndicator()  // Show a loading spinner while fetching data
+            ? const CircularProgressIndicator()  // Show a loading spinner while fetching data
             : Column(
               children: [Text('Movie Title: $movieTitle'),
               Text('Released: $releaseYear'),
