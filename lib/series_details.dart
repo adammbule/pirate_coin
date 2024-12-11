@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/blocdef.dart';
 
 
 class SeriesDetailsScreen extends StatefulWidget {
@@ -23,9 +24,9 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
   
   // Fetch movie details
   Future<void> fetchSpecificSeriesDetails() async {
-    final url = Uri.parse('https://api.themoviedb.org/3/tv/61818/season/1');
+    final url = Uri.parse('${baseurl}/3/tv/61818/season/1');
     final headers = {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTcwNTk0MjA4Ny45NDU5OTk5LCJzdWIiOiI2NWFlOWM0NzNlMmVjODAwZWJmMDA3YTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.m-rvfyxU5wUwRy8Z_jypbh2zfqubxpN_OuS8GVaNE48',
+      'Authorization': '${auth}',
       'accept': 'application/json',
     };
 

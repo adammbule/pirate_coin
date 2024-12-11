@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/movie_details.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/blocdef.dart';
 
 class TrendingMovieScreenfinal extends StatefulWidget {
   const TrendingMovieScreenfinal({super.key});
@@ -21,10 +22,10 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   }
 
   Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
+  final response = await http.get(Uri.parse('${baseurl}/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
     headers: {
-    HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTcwNTk0MjA4Ny45NDU5OTk5LCJzdWIiOiI2NWFlOWM0NzNlMmVjODAwZWJmMDA3YTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.m-rvfyxU5wUwRy8Z_jypbh2zfqubxpN_OuS8GVaNE48',
-    'accept': 'application/json',
+    HttpHeaders.authorizationHeader: '${auth}',
+      'accept': 'application/json',
 
   });
   if (response.statusCode == 200){

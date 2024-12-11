@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_application_1/blocdef.dart';
 
 abstract class SeriesDetailsEvent extends Equatable {
   SeriesDetailsEvent({required super.seriesId});

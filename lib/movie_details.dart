@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_application_1/blocdef.dart';
+
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -18,9 +20,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   
   // Fetch movie details
   Future<void> fetchSpecificMovieDetails() async {
-    final url = Uri.parse('https://api.themoviedb.org/3/movie/${widget.movieId}?language=en-US');
+    final url = Uri.parse('${baseurl}/3/movie/${widget.movieId}?language=en-US');
     final headers = {
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTcwNTk0MjA4Ny45NDU5OTk5LCJzdWIiOiI2NWFlOWM0NzNlMmVjODAwZWJmMDA3YTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.m-rvfyxU5wUwRy8Z_jypbh2zfqubxpN_OuS8GVaNE48',
+      'Authorization': '${auth}',
       'accept': 'application/json',
     };
 
