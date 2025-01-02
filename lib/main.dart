@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-          backgroundColor: const Color.fromARGB(255, 15, 15, 15),
+          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
           appBar: AppBar(
             title: const Text(title),
           ),
@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const Text('Movies',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 25,
                   ),)
                 ],
@@ -94,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                       child: Image.asset('lib/hotd.jpg'),
                     ),
                     const Text('Series',
-                    style: TextStyle(color: Colors.white, fontSize: 25,))
+                    style: TextStyle(color: Colors.black, fontSize: 25,))
                   ],
                 )),
           ])),

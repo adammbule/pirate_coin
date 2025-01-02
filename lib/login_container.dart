@@ -1,30 +1,82 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String _password = '';
+  String _username = '';
+
+  // Controllers for text fields
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Don't forget to dispose controllers to prevent memory leaks
+    _passwordController.dispose();
+    _usernameController.dispose();
+    super.dispose();
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(92, 12, 12, 12),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       appBar: AppBar(
         title: const Text('Account'),
+        backgroundColor: const Color.fromARGB(30, 30, 30, 30),
+
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const TextField(
-          //controller: _usernameController,
-          decoration: InputDecoration(
+        TextField(
+          controller: _usernameController,
+          decoration: const InputDecoration(
               border: UnderlineInputBorder(),
-              labelText: 'Enter Your Email/Username'),
+              labelText: 'Enter Your Username'),
+            onChanged: (value) {
+              setState(() {
+                _username = value;
+              });}
         ),
         TextFormField(
-          //controller: _passwordController,
+          controller: _passwordController,
           decoration: const InputDecoration(
             border: UnderlineInputBorder(),
             labelText: 'Enter your Password',
           ),
+      onChanged: (value) {
+      setState(() {
+      _password = value;
+      });}
         ),
+        Column(
+          children: [
+            InkWell(
+              onTap: () {
+                // Add your action here (e.g., navigate to another screen)
+                print("Forgot password tapped!");
+              },
+              child: Text(
+                'Forgot your password?',
+                style: TextStyle(
+                  color: Colors.blue, // Set text color to blue
+                  decoration: TextDecoration.underline, // Underline to mimic a hyperlink
+                ),
+              ),
+            ),
+          ],
+              ),
         ElevatedButton(
           onPressed: () {
+
+            print('username: $_username');
+            print('password: $_password');
             //sendTextToAPI(_usernameController.text);
             Navigator.pushNamed(context, '/home');
           },
@@ -36,7 +88,7 @@ class LoginScreen extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            
+
             Navigator.pushNamed(context, '/third');
           },
           style: ButtonStyle(

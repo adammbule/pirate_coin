@@ -53,7 +53,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       appBar: AppBar(
         title: const Text('Movie Details'),
       ),
