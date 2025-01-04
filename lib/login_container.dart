@@ -10,17 +10,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _username = '';
+  String _email = '';
   String _password = '';
+  String _token = '';
 
   // Controllers for text fields
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   void dispose() {
     // Don't forget to dispose controllers to prevent memory leaks
-    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -30,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final url = Uri.parse('http://192.168.0.12:4000/login'); // Your backend API endpoint
 
     final data = {
-      'username': _username,
+      'email': _email,
       'password': _password,
     };
 
@@ -61,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
         // If login is successful, navigate to the home page
-        //Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
         // If login fails, show an error message
         showDialog(
@@ -113,14 +114,14 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
-            controller: _usernameController,
+            controller: _emailController,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
               labelText: 'Enter Your Username',
             ),
             onChanged: (value) {
               setState(() {
-                _username = value;
+                _email = value;
               });
             },
           ),
