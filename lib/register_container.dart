@@ -75,7 +75,7 @@ class _CreateScreenState extends State<CreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: const Text('Member Sign Up'),
         backgroundColor: Color.fromARGB(30, 30 , 30, 30),

@@ -33,12 +33,13 @@ void main() {
         '/eighth':(context) => const MovieDetailsScreen(movieId: 0,),
         '/ninth':(context) => const SeriesDetailsScreen(seriesId: 0,),
       },
+       debugShowCheckedModeBanner: false,
     ),
   ); //calling the function arguments when calling a function
 }
 
 
-//change to statefull widgets
+//change to stateful widgets
 
 
 class HomeScreen extends StatelessWidget {
@@ -50,9 +51,10 @@ class HomeScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-          backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           appBar: AppBar(
             title: const Text(title),
+            backgroundColor: Color.fromARGB(30, 30, 30, 30),
           ),
           body: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
             /*Container(
@@ -110,9 +112,10 @@ class TrendingMovieScreen extends StatelessWidget {
     return MaterialApp(
       title: title,
       home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         appBar: AppBar(
           title: const Text(title),
+          backgroundColor: Color.fromARGB(30, 30, 30, 30),
         ),
         body: GridView.count(
           crossAxisCount: 2,
@@ -166,7 +169,7 @@ class MovieOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       body: Column(
         children: [
           Image.asset(//place images in placeholders eventually
@@ -179,7 +182,7 @@ class MovieOverviewScreen extends StatelessWidget {
           const Text(
             'Mad Max:Fury Road',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 30,
             ),
           ),
@@ -195,7 +198,7 @@ class MovieOverviewScreen extends StatelessWidget {
           ),
           const Text('Mad Max',
           style: TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: 20,
       ),),
           const Text('Sand, Dystopia, Wild cars, Action!!!', 
@@ -216,13 +219,13 @@ class SeriesOverviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           const Text(
             'House of The Dragon',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 30,
             ),
           ),
@@ -277,7 +280,7 @@ class MyWatchlistScreen extends StatelessWidget {
  @override
  Widget build(BuildContext context){
   return const Scaffold(
-    //backgroundColor: Colors.black,
+    backgroundColor: Colors.white,
     body: Column(
     children: [
     //MovieId:'848326'),
@@ -290,7 +293,7 @@ class PirateXchangeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return const Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: PirateXchangeMovies(),
     );
   }
