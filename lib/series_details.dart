@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_application_1/blocdef.dart';
+import 'package:Piratecoin/blocdef.dart';
 
 
 class SeriesDetailsScreen extends StatefulWidget {
@@ -61,7 +61,7 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(seriesTitle),
       ),

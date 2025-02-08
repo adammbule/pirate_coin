@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,96 +12,81 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _email = '';
-  String _password = '';
-  String _token = '';
-
-  // Controllers for text fields
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  String _token = ''; // Variable to store the token
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   void dispose() {
-    // Don't forget to dispose controllers to prevent memory leaks
-    _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
-  // Function to handle login
-  Future<void> loginUser() async {
-    final url = Uri.parse('http://192.168.0.12:4000/login'); // Your backend API endpoint
-
-    final data = {
-      'email': _email,
-      'password': _password,
-    };
-
+  // Function to handle Google login
+  Future<void> _googleLogin() async {
     try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(data),
-      );
+      GoogleSignInAccount? user = await _googleSignIn.signIn();
+      if (user != null) {
+        // Get the authentication token from Google
+        final GoogleSignInAuthentication googleAuth = await user.authentication;
+        final idToken = googleAuth.idToken;
+        final accessToken = googleAuth.accessToken;
 
-      final responseBody = json.decode(response.body);
+        if (idToken != null) {
+          // You can send the token to your backend for verification and use
+          final response = await _loginWithGoogle(idToken);
 
-      if (response.statusCode == 200) {
+          if (response != null && response['token'] != null) {
+            setState(() {
+              _token = response['token'];
+            });
 
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Login Successful'),
-            content: Text(responseBody['message'] ?? 'Login Successful. Redirecting...'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        // If login is successful, navigate to the home page
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // If login fails, show an error message
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Login Failed'),
-            content: Text(responseBody['message'] ?? 'An error occurred'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
+            // Store the token persistently using shared_preferences
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('token', _token);
+
+            // Navigate to the home screen or other screen
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        }
       }
     } catch (error) {
-      // Show an error if the API call fails
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred: $error'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-      //Navigator.pushReplacementNamed(context, '/home');
+      _showErrorDialog('Google Login Error', error.toString());
     }
+  }
+
+  // Function to send the Google token to your backend for verification
+  Future<Map<String, dynamic>?> _loginWithGoogle(String idToken) async {
+    final url = Uri.parse('http://192.168.0.12:4000/google-login'); // Your backend API endpoint
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'idToken': idToken}),
+    );
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      _showErrorDialog('Login Failed', 'Google login failed. Please try again.');
+      return null;
+    }
+  }
+
+  // Function to display error dialogs
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -113,59 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextField(
-            controller: _emailController,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Enter Your Username',
-            ),
-            onChanged: (value) {
-              setState(() {
-                _email = value;
-              });
-            },
-          ),
-          TextFormField(
-            controller: _passwordController,
-            decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
-              labelText: 'Enter your Password',
-            ),
-            obscureText: true, // Hide the password text
-            onChanged: (value) {
-              setState(() {
-                _password = value;
-              });
-            },
-          ),
-          Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  // Add your action here (e.g., navigate to password reset screen)
-                  print("Forgot password tapped!");
-                },
-                child: Text(
-                  'Forgot your password?',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline, // Mimic hyperlink
-                  ),
-                ),
-              ),
-            ],
-          ),
+          // Google Login Button
           ElevatedButton(
-            onPressed: () {
-              // Call the login function to validate the user credentials
-              loginUser();
-            },
+            onPressed: _googleLogin,
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                   const Color.fromARGB(255, 243, 22, 6)),
             ),
             child: const Text(
-              'Login',
+              'Login with Google',
               style: TextStyle(
                   color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
             ),

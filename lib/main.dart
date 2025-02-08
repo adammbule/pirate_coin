@@ -2,15 +2,15 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/movie_details.dart';
+import 'package:Piratecoin/movie_details.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
-import 'package:flutter_application_1/pirateXchange_container.dart';
-import 'package:flutter_application_1/login_container.dart';
-import 'package:flutter_application_1/register_container.dart';
-import 'package:flutter_application_1/series_details.dart';
-import 'package:flutter_application_1/startscreen_container.dart';
-import 'package:flutter_application_1/trendingmovie_container.dart';
-import 'package:flutter_application_1/trendingseries_container.dart';
+import 'package:Piratecoin/pirateXchange_container.dart';
+import 'package:Piratecoin/login_container.dart';
+import 'package:Piratecoin/register_container.dart';
+import 'package:Piratecoin/series_details.dart';
+import 'package:Piratecoin/startscreen_container.dart';
+import 'package:Piratecoin/trendingmovie_container.dart';
+import 'package:Piratecoin/trendingseries_container.dart';
 
 
 

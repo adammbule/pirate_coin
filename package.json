@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "cors": "^2.8.5",
+    "google-auth-library": "^9.15.1",
     "mongodb": "^6.12.0"
   }
 }

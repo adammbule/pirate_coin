@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/movie_details.dart';
+import 'package:Piratecoin/movie_details.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_application_1/blocdef.dart';
+import 'package:Piratecoin/blocdef.dart';
 
 class TrendingMovieScreenfinal extends StatefulWidget {
   const TrendingMovieScreenfinal({super.key});
@@ -22,10 +22,11 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   }
 
   Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('$baseurl/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
+  final response = await http.get(Uri.parse('http://192.168.0.12:3000/getmovies'),
     headers: {
     HttpHeaders.authorizationHeader: auth,
       'accept': 'application/json',
+      'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzM2NzkxMjc3LCJleHAiOjE3MzY3OTQ4Nzd9._bUn6HjSq3nCZ6Qa6QW5l6ZV7nLOHpwHmeg5QGCBY2w',
 
   });
   if (response.statusCode == 200){
