@@ -23,15 +23,21 @@ class _LoginScreenState extends State<LoginScreen> {
   // Function to handle Google login
   Future<void> _googleLogin() async {
     try {
+      // Sign out any previous session before trying again
+      await _googleSignIn.signOut();
+
+      // Sign in with Google
       GoogleSignInAccount? user = await _googleSignIn.signIn();
+
       if (user != null) {
         // Get the authentication token from Google
         final GoogleSignInAuthentication googleAuth = await user.authentication;
         final idToken = googleAuth.idToken;
         final accessToken = googleAuth.accessToken;
 
+        // Ensure both tokens are not null
         if (idToken != null) {
-          // You can send the token to your backend for verification and use
+          // Send the token to your backend for verification
           final response = await _loginWithGoogle(idToken);
 
           if (response != null && response['token'] != null) {
@@ -43,29 +49,39 @@ class _LoginScreenState extends State<LoginScreen> {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setString('token', _token);
 
-            // Navigate to the home screen or other screen
+            // Navigate to the home screen
             Navigator.pushReplacementNamed(context, '/home');
+          } else {
+            _showErrorDialog('Login Failed', 'No token returned from backend.');
           }
+        } else {
+          _showErrorDialog('Error', 'Google ID Token is null.');
         }
       }
     } catch (error) {
+      // Show detailed error message if something goes wrong
       _showErrorDialog('Google Login Error', error.toString());
     }
   }
 
   // Function to send the Google token to your backend for verification
   Future<Map<String, dynamic>?> _loginWithGoogle(String idToken) async {
-    final url = Uri.parse('http://192.168.0.12:4000/google-login'); // Your backend API endpoint
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'idToken': idToken}),
-    );
+    final url = Uri.parse('http://192.168.0.12:4000/users/login/google'); // Your backend API endpoint
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'idToken': idToken}),
+      );
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      _showErrorDialog('Login Failed', 'Google login failed. Please try again.');
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        _showErrorDialog('Login Failed', 'Google login failed. Please try again.');
+        return null;
+      }
+    } catch (e) {
+      _showErrorDialog('Network Error', 'Failed to reach the backend.');
       return null;
     }
   }

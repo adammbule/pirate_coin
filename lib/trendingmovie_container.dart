@@ -14,7 +14,7 @@ class TrendingMovieScreenfinal extends StatefulWidget {
 
 class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   List <dynamic> Movies = [];
-    
+
   @override
   void initState(){
     super.initState();
@@ -22,23 +22,24 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   }
 
   Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('http://192.168.0.12:3000/getmovies'),
+  final response = await http.get(Uri.parse('http://127.0.0.1:4000/movies/trendingmovies'),
     headers: {
     HttpHeaders.authorizationHeader: auth,
       'accept': 'application/json',
-      'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzM2NzkxMjc3LCJleHAiOjE3MzY3OTQ4Nzd9._bUn6HjSq3nCZ6Qa6QW5l6ZV7nLOHpwHmeg5QGCBY2w',
+      'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzM5NjQ0ODIzLCJleHAiOjE3Mzk2NDg0MjN9.S_7cmIg_9cf4Ea5vuGyUyeDENYhqI9Arc44ghSMWY3k',
 
   });
   if (response.statusCode == 200){
     setState(() {
-      Movies = json.decode(response.body)['results'];
+      var decodedData = json.decode(response.body)['results'];
+      Movies = decodedData ?? [];
     });
     for (var movie in Movies){
       int movieId = movie['id'];
-      
+
       await fetchMovieDetails(movieId);
     }
-} else 
+} else
   {
     throw const FormatException(' Failed to load Movies. Retry');
   }
@@ -54,7 +55,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
         ),
       itemCount: Movies.length,
       itemBuilder: (BuildContext context, int index){
-        int movieId = int.parse('${Movies[index] ['id']}');
+        int movieId = int.parse('${Movies[index] ['id'] }');
         String moviePoster = '${Movies[index] ['poster_path']}';
         return GestureDetector(
   onTap: () async {
@@ -76,20 +77,22 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
 
               ),
               Text(
-                  Movies[index]['title'],
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Movies[index]['title'] ?? 'Unknown Title',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
                 ),
-              Text('${Movies[index] ['id']}',
-                    textAlign:  TextAlign.left,
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ),
-                    )
-                //fetch movie images
+              ),
+              Text(
+                Movies[index]['id'] != null ? '${Movies[index]['id']}' : 'Unknown ID',
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+
+              //fetch movie images
         ]),
           ),
 
@@ -132,7 +135,7 @@ class _MovieDetailsState extends State<MovieDetails> {
     super.initState();
     fetchMovieDetails();
   }
- 
+
 
 Future<Map<String, dynamic>> fetchMovieDetails() async {
     final response = await http.get(
@@ -145,14 +148,14 @@ Future<Map<String, dynamic>> fetchMovieDetails() async {
         if (response.statusCode == 200){
           setState(() {
             MovieDets = json.decode(response.body)['Details'];
-          }); 
+          });
         } else {
           throw Exception('Failed to load Movie Details./n Tap to try again/n');
         }
         return{};
-  } 
+  }
 
-  
+
    @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -165,9 +168,9 @@ Future<Map<String, dynamic>> fetchMovieDetails() async {
           Text(MovieDets['overview'] ?? 'Unkown Plot')
         ],
       ),
-    
+
     );
-    
+
 
 
   }
@@ -176,7 +179,7 @@ Future<Map<String, dynamic>> fetchMovieDetails() async {
 
 /*BLOC VS CUBIT
 Bloc extends a cubit
-A cubit uses functions to receive input from UI 
+A cubit uses functions to receive input from UI
 while Bloc uses events to receive input from UI
 Blocprovider, bloclistener & blocbuilder
 Streams are interactions in the app needed to emit changes in code.*/
