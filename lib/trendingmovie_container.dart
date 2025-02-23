@@ -22,7 +22,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   }
 
   Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('http://127.0.0.1:4000/movies/trendingmovies'),
+  final response = await http.get(Uri.parse('https://piratenode.onrender.com/api/movies/trendingmovies'),
     headers: {
     HttpHeaders.authorizationHeader: auth,
       'accept': 'application/json',

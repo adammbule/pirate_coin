@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Function to send the Google token to your backend for verification
   Future<Map<String, dynamic>?> _loginWithGoogle(String idToken) async {
-    final url = Uri.parse('http://192.168.0.12:4000/users/login/google'); // Your backend API endpoint
+    final url = Uri.parse('https://piratenode.onrender.com/api/users/login/google'); // Your backend API endpoint
     try {
       final response = await http.post(
         url,
