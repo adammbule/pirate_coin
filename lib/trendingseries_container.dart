@@ -23,7 +23,7 @@ class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal>{
   }
 
   Future<void> fetchSeries() async {
-  final response = await http.get(Uri.parse('$baseurl/3/trending/tv/week?language=en-US'),
+  final response = await http.get(Uri.parse('$baseurlfinal/series/trendingseries'),
     headers: {
     HttpHeaders.authorizationHeader: auth,
       'accept': 'application/json',

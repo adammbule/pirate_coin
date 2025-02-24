@@ -22,12 +22,11 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal>{
   }
 
   Future<void> fetchMovie() async {
-  final response = await http.get(Uri.parse('https://piratenode.onrender.com/api/movies/trendingmovies'),
+  final response = await http.get(Uri.parse('$baseurlfinal/movies/trendingmovies'),
     headers: {
     HttpHeaders.authorizationHeader: auth,
       'accept': 'application/json',
-      'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjMiLCJ1c2VybmFtZSI6InRlc3RVc2VyIiwiaWF0IjoxNzM5NjQ0ODIzLCJleHAiOjE3Mzk2NDg0MjN9.S_7cmIg_9cf4Ea5vuGyUyeDENYhqI9Arc44ghSMWY3k',
-
+      'authorization': '$auth',
   });
   if (response.statusCode == 200){
     setState(() {
