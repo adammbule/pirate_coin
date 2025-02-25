@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:Piratecoin/blocdef.dart';
 
-
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
 
@@ -17,7 +16,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   String moviePlot = '';
   String movieTitle = '';
   String releaseYear = '';
-  
+  String moviePoster = '';  // Store the movie poster image URL
+
   // Fetch movie details
   Future<void> fetchSpecificMovieDetails() async {
     final url = Uri.parse('$baseurl/3/movie/${widget.movieId}?language=en-US');
@@ -35,6 +35,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           moviePlot = moviedata['overview'];  // Update the moviePlot in the state
           movieTitle = moviedata['original_title'];
           releaseYear = moviedata['release_date'];
+          moviePoster = moviedata['poster_path'];  // Get the poster image URL
         });
       } else {
         throw Exception('Failed to load movie data');
@@ -53,18 +54,70 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      backgroundColor: Colors.transparent, // Remove default background color
       appBar: AppBar(
         title: const Text('Movie Details'),
       ),
-      body: Center(
-        child: moviePlot.isEmpty 
-            ? const CircularProgressIndicator()  // Show a loading spinner while fetching data
-            : Column(
-              children: [Text('Movie Title: $movieTitle'),
-              Text('Released: $releaseYear'),
-              Text('Movie Plot: $moviePlot')] ) // Show the fetched movie plot
-           
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: moviePoster.isEmpty
+                ? Container() // If no poster, don't display anything
+                : Image.network(
+              'https://image.tmdb.org/t/p/original$moviePoster', // Set the movie poster as background
+              fit: BoxFit.cover,
+              opacity: AlwaysStoppedAnimation(0.3), // Set some opacity to make text visible
+            ),
+          ),
+          // Content Layer (on top of the background image)
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title
+                Text(
+                  movieTitle,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 10),
+
+                // Release Year
+                Text(
+                  'Released: $releaseYear',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 20),
+
+                // Movie Plot
+                Text(
+                  'Movie Plot:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  moviePlot,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:Piratecoin/blocdef.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -25,7 +25,6 @@ class _CreateScreenState extends State<CreateScreen> {
 
   @override
   void dispose() {
-    // Don't forget to dispose controllers to prevent memory leaks
     _emailController.dispose();
     _passwordController.dispose();
     _repeatPasswordController.dispose();
@@ -35,20 +34,16 @@ class _CreateScreenState extends State<CreateScreen> {
 
   // Function to send data to the API
   Future<void> createUser() async {
-    // The API endpoint
-    final url = Uri.parse('http://192.168.0.12:3000/create-user');
+    final url = Uri.parse('$baseurlfinal/api/users/createuser');
 
-    // Create a map of the data you want to send
     Map<String, dynamic> data = {
       'email': _email,
       'username': _username,
       'password': _password,
-         };
+    };
 
-    // Convert the data to JSON format
     String jsonData = json.encode(data);
 
-    // Send a POST request
     try {
       final response = await http.post(
         url,
@@ -56,18 +51,12 @@ class _CreateScreenState extends State<CreateScreen> {
         body: jsonData,
       );
 
-      // Check if the request was successful
       if (response.statusCode == 201) {
-        // Handle success (e.g., navigate to a new screen)
         print('User created successfully');
-        // Example: Navigate to another screen
-        // Navigator.pushNamed(context, '/nextScreen');
       } else {
-        // Handle error
         print('Failed to create user. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      // Handle exceptions
       print('Error: $e');
     }
   }
@@ -75,111 +64,186 @@ class _CreateScreenState extends State<CreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        title: const Text('Member Sign Up'),
-        backgroundColor: Color.fromARGB(30, 30 , 30, 30),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Email',
-                focusColor: Colors.white,
-              ),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                setState(() {
-                  _email = value;
-                });
-              },
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.network(
+              'https://image.tmdb.org/t/p/original/6vMRIwd2WaGsRwR0z3C9BFEth6n.jpg', // Replace with your background image URL
+              fit: BoxFit.cover,
             ),
-            TextFormField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Username',
-                focusColor: Colors.white,
-              ),
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  _username = value;
-                });
-              },
+          ),
+          // Overlay to darken the background
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
             ),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Enter Your Password',
-              ),
-              obscureText: true, // Hide password input
-              onChanged: (value) {
-                setState(() {
-                  _password = value;
-                });
-              },
-            ),
-            TextFormField(
-              controller: _repeatPasswordController,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Repeat Password',
-              ),
-              obscureText: true, // Hide password input
-              onChanged: (value) {
-                setState(() {
-                  _repeatPassword = value;
-                });
-              },
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: _isChecked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isChecked = value ?? false;
-                    });
-                  },
+          ),
+          // Centered Create Account Form
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title or Logo (Optional)
+                    Text(
+                      'Create Your Account',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    // Email Text Field
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter Your Email',
+                        labelStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white70,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: (value) {
+                        setState(() {
+                          _email = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    // Username Text Field
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter Your Username',
+                        labelStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white70,
+                      ),
+                      keyboardType: TextInputType.text,
+                      onChanged: (value) {
+                        setState(() {
+                          _username = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    // Password Text Field
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Enter Your Password',
+                        labelStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white70,
+                      ),
+                      obscureText: true,
+                      onChanged: (value) {
+                        setState(() {
+                          _password = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    // Repeat Password Text Field
+                    TextFormField(
+                      controller: _repeatPasswordController,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Repeat Password',
+                        labelStyle: TextStyle(color: Colors.white),
+                        filled: true,
+                        fillColor: Colors.white70,
+                      ),
+                      obscureText: true,
+                      onChanged: (value) {
+                        setState(() {
+                          _repeatPassword = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    // Terms and Conditions Checkbox
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _isChecked = value ?? false;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Accept Our Terms and Conditions.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    // Sign Up Button
+                    ElevatedButton(
+                      onPressed: () {
+                        createUser();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                      ),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    // Already a member?
+                    const Text(
+                      'Already a member?',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    // Login Button
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/second');
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                      ),
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const Text('Accept Our Terms and Conditions.'),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // You can now use the variables (_email, _password, etc.) to send the data
-                // Example: sendTextToAPI(_email);
-                print('Email: $_email');
-                print('Username: $_username');
-                print('Password: $_password');
-                print('Repeat Password: $_repeatPassword');
-                print('Terms Accepted: $_isChecked');
-                // You can also navigate to another screen after sign-up
-                //call function for createuser
-                createUser();
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
               ),
-              child: const Text('Sign Up'),
             ),
-            const Text('Already a member?'),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/second');
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.red),
-              ),
-              child: const Text('Login'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

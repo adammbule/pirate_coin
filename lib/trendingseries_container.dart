@@ -15,7 +15,7 @@ class TrendingSeriesScreenfinal extends StatefulWidget {
 
 class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal>{
   List <dynamic> Series = [];
-    
+
   @override
   void initState(){
     super.initState();
@@ -35,10 +35,10 @@ class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal>{
     });
     for (var series in Series){
       int seriesId = series['id'];
-      
+
       await fetchSeriesDetails(seriesId);
     }
-} else 
+} else
   {
     throw const FormatException(' Failed to load Movies. Retry');
   }
@@ -56,6 +56,7 @@ class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal>{
       itemBuilder: (BuildContext context, int index){
         int seriesId = int.parse('${Series[index] ['id']}');
         String seriesPoster = '${Series[index] ['poster_path']}';
+
         return GestureDetector(
   onTap: () async {
     await Navigator.push(
@@ -133,27 +134,27 @@ class _SeriesDetailsState extends State<SeriesDetails> {
     super.initState();
     fetchSeriesDetails();
   }
- 
+
 
 Future<Map<String, dynamic>> fetchSeriesDetails() async {
     final response = await http.get(
-      Uri.parse('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc'),
+      Uri.parse('$baseurlfinal/series/getseriesdetails/${widget.seriesId}/'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTcwNTk0MjA4Ny45NDU5OTk5LCJzdWIiOiI2NWFlOWM0NzNlMmVjODAwZWJmMDA3YTYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.m-rvfyxU5wUwRy8Z_jypbh2zfqubxpN_OuS8GVaNE48', 
+        HttpHeaders.authorizationHeader: '$auth',
         'accept': 'application/json',
       });
 
         if (response.statusCode == 200){
           setState(() {
             SeriesDets = json.decode(response.body)['Details'];
-          }); 
+          });
         } else {
           throw Exception('Failed to load Movie Details./n Tap to try again/n');
         }
         return{};
-  } 
+  }
 
-  
+
    @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -163,12 +164,13 @@ Future<Map<String, dynamic>> fetchSeriesDetails() async {
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
           Text(SeriesDets['title'] ?? 'Unknown Title'),
-          Text(SeriesDets['overview'] ?? 'Unkown Plot')
+          Text(SeriesDets['overview'] ?? 'Unknown Plot'),
+          Text(SeriesDets['numberofseasons'] ?? 'Unknown Plot'),
         ],
       ),
-    
+
     );
-    
+
 
 
   }
@@ -177,7 +179,7 @@ Future<Map<String, dynamic>> fetchSeriesDetails() async {
 
 /*BLOC VS CUBIT
 Bloc extends a cubit
-A cubit uses functions to receive input from UI 
+A cubit uses functions to receive input from UI
 while Bloc uses events to receive input from UI
 Blocprovider, bloclistener & blocbuilder
 Streams are interactions in the app needed to emit changes in code.*/

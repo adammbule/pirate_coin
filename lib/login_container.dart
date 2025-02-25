@@ -14,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String _token = ''; // Variable to store the token
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  String backgroundImage = 'https://image.tmdb.org/t/p/original/efz0MgPAxPw11PIeAJNgKKg3Paa.jpg'; // Change to your image URL
 
   @override
   void dispose() {
@@ -108,41 +109,81 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        title: const Text('Account'),
-        backgroundColor: const Color.fromARGB(30, 30, 30, 30),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          // Google Login Button
-          ElevatedButton(
-            onPressed: _googleLogin,
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 243, 22, 6)),
-            ),
-            child: const Text(
-              'Login with Google',
-              style: TextStyle(
-                  color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+          // Background Image
+          Positioned.fill(
+            child: Image.network(
+              backgroundImage,
+              fit: BoxFit.cover,
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/third');
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  const Color.fromARGB(255, 243, 22, 6)),
+          // Overlay to darken the background
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withOpacity(0.5),
             ),
-            child: const Text(
-              'Register',
-              style: TextStyle(
-                  color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
+          // Login Form Centered on the Screen
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // App Title or Logo (optional)
+                  Text(
+                    'Welcome Back!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Google Login Button
+                  ElevatedButton(
+                    onPressed: _googleLogin,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 11, 129, 191)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      )),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                    ),
+                    child: const Text(
+                      'Login with Google',
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Register Button
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/third');
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          const Color.fromARGB(255, 11, 129, 191)),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      )),
+                      padding: MaterialStateProperty.all(
+                          const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                    ),
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(
+                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );
