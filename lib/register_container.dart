@@ -210,6 +210,28 @@ class _CreateScreenState extends State<CreateScreen> {
                       ),
                     ),
                     SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () {
+                        createUser();
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        )),
+                      ),
+                      child: const Text(
+                        'Vendor Sign Up',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
                     // Already a member?
                     const Text(
                       'Already a member?',

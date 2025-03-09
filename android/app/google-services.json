@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "338172721817",
+    "project_id": "piratecoin-50fee",
+    "storage_bucket": "piratecoin-50fee.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338172721817:android:538bf1b311616cc34d5608",
+        "android_client_info": {
+          "package_name": "com.piratecoin.piratecoin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338172721817-97f7hrcntgnn4iecbfcvgf016e2e8pmd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piratecoin.piratecoin",
+            "certificate_hash": "781e64a14a4cbe41c9cf6acf35be14bcb04bb424"
+          }
+        },
+        {
+          "client_id": "338172721817-e37lr8t9d8bjdd0cdemhcfrtupi3ig7e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piratecoin.piratecoin",
+            "certificate_hash": "7dfa879c55a844baa5b650cdf6149381a4746dcd"
+          }
+        },
+        {
+          "client_id": "338172721817-jsf21hr54fisspikmh9riqflme41jm69.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piratecoin.piratecoin",
+            "certificate_hash": "0c64e43a2a6cf8764410e818a99805bfda0dfb9e"
+          }
+        },
+        {
+          "client_id": "338172721817-p4nufmo8pp2kj5hvcnd3sjj8tepq17lk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOLw84wvM5CCwv6fQ3bx4M2jye2Fj9a_I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338172721817-p4nufmo8pp2kj5hvcnd3sjj8tepq17lk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

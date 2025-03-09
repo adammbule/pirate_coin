@@ -1,5 +1,5 @@
 name: Piratecoin
-description: "A new Flutter project."
+description: "A project aimed at reducing the cost of acquiring motion pictures."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.0.1
   google_sign_in: ^5.0.7
+
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'blocdef.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -65,9 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // Function to send the Google token to your backend for verification
   Future<Map<String, dynamic>?> _loginWithGoogle(String idToken) async {
-    final url = Uri.parse('https://piratenode.onrender.com/api/users/login/google'); // Your backend API endpoint
+    final url = Uri.parse('${baseurlfinal}/users/login/google'); // Your backend API endpoint
     try {
       final response = await http.post(
         url,
@@ -76,7 +76,17 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.statusCode == 200) {
-        return json.decode(response.body);
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        // Assuming the response contains the session key (token)
+        String sessionKey = responseData['sessionKey'];
+
+        // Store the session key in shared preferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('sessionKey', sessionKey); // Save the session key
+
+        // Return the response data (you can include the session key if needed)
+        return responseData;
       } else {
         _showErrorDialog('Login Failed', 'Google login failed. Please try again.');
         return null;
@@ -85,6 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
       _showErrorDialog('Network Error', 'Failed to reach the backend.');
       return null;
     }
+  }
+
+// Function to retrieve the session key for subsequent API calls
+  Future<String?> getSessionKey() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('sessionKey'); // Retrieve the session key
   }
 
   // Function to display error dialogs

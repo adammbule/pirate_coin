@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:Piratecoin/blocdef.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Function to retrieve the session key for subsequent API calls
+Future<String?> getSessionKey() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('sessionKey'); // Retrieve the session key
+}
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -20,6 +27,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   // Fetch movie details
   Future<void> fetchSpecificMovieDetails() async {
+    String? sessionKey = await getSessionKey();
     final url = Uri.parse('$baseurl/3/movie/${widget.movieId}?language=en-US');
     final headers = {
       'Authorization': auth,

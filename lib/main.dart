@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:Piratecoin/movie_details.dart';
+//import 'package:Piratecoin/movie_details.dart';
 //import 'package:http/shujaanet.com/coin.dart' as http;
 import 'package:Piratecoin/pirateXchange_container.dart';
 import 'package:Piratecoin/login_container.dart';
