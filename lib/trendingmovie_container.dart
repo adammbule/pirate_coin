@@ -177,10 +177,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Future<void> fetchMovieDetails(int movieId) async {
+    String? sessionKey = await getSessionKey();
     final response = await http.get(
-      Uri.parse('$baseurl/3/movie/$movieId?language=en-US'),
+      Uri.parse('$baseurlfinal/movies/moviedetails/${widget.movieId}'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $auth',
+        HttpHeaders.authorizationHeader: 'Bearer $sessionKey',
         'accept': 'application/json',
       },
     );
@@ -202,6 +203,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(MovieDets['title'] ?? 'Unknown Title'),
+          Text(MovieDets['release_date'] ?? 'Unknown date'),
+          Text(MovieDets['runtime'] != null
+              ? '${MovieDets['runtime']} minutes'
+              : 'Unknown runtime'),
           Text(MovieDets['overview'] ?? 'Unknown Plot'),
         ],
       ),

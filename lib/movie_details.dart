@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -28,9 +30,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   // Fetch movie details
   Future<void> fetchSpecificMovieDetails() async {
     String? sessionKey = await getSessionKey();
-    final url = Uri.parse('$baseurl/3/movie/${widget.movieId}?language=en-US');
+    final url = Uri.parse('$baseurlfinal/movies/moviedetails/${widget.movieId}');
     final headers = {
-      'Authorization': auth,
+      HttpHeaders.authorizationHeader: 'Bearer $sessionKey',
       'accept': 'application/json',
     };
 
