@@ -13,46 +13,34 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _token = ''; // Variable to store the token
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String _token = '';
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  String backgroundImage = 'https://image.tmdb.org/t/p/original/efz0MgPAxPw11PIeAJNgKKg3Paa.jpg'; // Change to your image URL
+  String backgroundImage =
+      'https://image.tmdb.org/t/p/original/efz0MgPAxPw11PIeAJNgKKg3Paa.jpg';
 
   @override
   void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  // Function to handle Google login
   Future<void> _googleLogin() async {
     try {
-      // Sign out any previous session before trying again
       await _googleSignIn.signOut();
-
-      // Sign in with Google
       GoogleSignInAccount? user = await _googleSignIn.signIn();
 
       if (user != null) {
-        // Get the authentication token from Google
-        final GoogleSignInAuthentication googleAuth = await user.authentication;
+        final googleAuth = await user.authentication;
         final idToken = googleAuth.idToken;
-        final accessToken = googleAuth.accessToken;
 
-        // Ensure both tokens are not null
         if (idToken != null) {
-          // Send the token to your backend for verification
           final response = await _loginWithGoogle(idToken);
-
           if (response != null && response['token'] != null) {
-            setState(() {
-              _token = response['token'];
-            });
-
-            // Store the token persistently using shared_preferences
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setString('token', _token);
-
-            // Navigate to the home screen
-            Navigator.pushReplacementNamed(context, '/home');
+            _saveTokenAndNavigate(response['token']);
           } else {
             _showErrorDialog('Login Failed', 'No token returned from backend.');
           }
@@ -61,13 +49,44 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       }
     } catch (error) {
-      // Show detailed error message if something goes wrong
       _showErrorDialog('Google Login Error', error.toString());
     }
   }
 
+  Future<void> _manualLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showErrorDialog('Missing Fields', 'Please enter both email and password.');
+      return;
+    }
+
+    final url = Uri.parse('${baseurlfinal}/users/login'); // Update if different
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'email': email, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['token'] != null) {
+          _saveTokenAndNavigate(data['token']);
+        } else {
+          _showErrorDialog('Login Failed', 'No token received.');
+        }
+      } else {
+        _showErrorDialog('Login Failed', 'Invalid email or password.');
+      }
+    } catch (e) {
+      _showErrorDialog('Network Error', 'Could not reach backend.');
+    }
+  }
+
   Future<Map<String, dynamic>?> _loginWithGoogle(String idToken) async {
-    final url = Uri.parse('${baseurlfinal}/users/login/google'); // Your backend API endpoint
+    final url = Uri.parse('${baseurlfinal}/users/login/google');
     try {
       final response = await http.post(
         url,
@@ -76,34 +95,29 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-
-        // Assuming the response contains the session key (token)
-        String sessionKey = responseData['sessionKey'];
-
-        // Store the session key in shared preferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('sessionKey', sessionKey); // Save the session key
-
-        // Return the response data (you can include the session key if needed)
-        return responseData;
+        final data = json.decode(response.body);
+        await SharedPreferences.getInstance()
+            .then((prefs) => prefs.setString('sessionKey', data['sessionKey']));
+        return data;
       } else {
-        _showErrorDialog('Login Failed', 'Google login failed. Please try again.');
+        _showErrorDialog('Login Failed', 'Google login failed. Try again.');
         return null;
       }
     } catch (e) {
-      _showErrorDialog('Network Error', 'Failed to reach the backend.');
+      _showErrorDialog('Network Error', 'Failed to reach backend.');
       return null;
     }
   }
 
-// Function to retrieve the session key for subsequent API calls
-  Future<String?> getSessionKey() async {
+  Future<void> _saveTokenAndNavigate(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('sessionKey'); // Retrieve the session key
+    await prefs.setString('token', token);
+    setState(() {
+      _token = token;
+    });
+    Navigator.pushReplacementNamed(context, '/home');
   }
 
-  // Function to display error dialogs
   void _showErrorDialog(String title, String message) {
     showDialog(
       context: context,
@@ -112,11 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
         content: Text(message),
         actions: [
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('OK'),
-          ),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK')),
         ],
       ),
     );
@@ -127,73 +138,91 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
-            child: Image.network(
-              backgroundImage,
-              fit: BoxFit.cover,
-            ),
+            child: Image.network(backgroundImage, fit: BoxFit.cover),
           ),
-          // Overlay to darken the background
           Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
-            ),
+            child: Container(color: Colors.black.withOpacity(0.5)),
           ),
-          // Login Form Centered on the Screen
           Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // App Title or Logo (optional)
-                  Text(
+                  const Text(
                     'Welcome Back!',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 24),
+                  TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  // Google Login Button
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _manualLogin,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _googleLogin,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 11, 129, 191)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 11, 129, 191),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
                     child: const Text(
                       'Login with Google',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  // Register Button
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/third');
                     },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 11, 129, 191)),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      )),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(vertical: 16, horizontal: 30)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 11, 129, 191),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                     ),
                     child: const Text(
                       'Register',
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
