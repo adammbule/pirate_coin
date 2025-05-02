@@ -1,186 +1,186 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:Piratecoin/series_details.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Piratecoin/series_details.dart';
 import 'package:Piratecoin/blocdef.dart';
-
 
 class TrendingSeriesScreenfinal extends StatefulWidget {
   const TrendingSeriesScreenfinal({super.key});
 
   @override
   _TrendingSeriesScreenState createState() => _TrendingSeriesScreenState();
-  }
+}
 
-class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal>{
-  List <dynamic> Series = [];
+class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal> {
+  List<dynamic> Series = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     fetchSeries();
   }
 
   Future<void> fetchSeries() async {
-  final response = await http.get(Uri.parse('$baseurlfinal/series/trendingseries'),
-    headers: {
-    HttpHeaders.authorizationHeader: auth,
-      'accept': 'application/json',
-
-  });
-  if (response.statusCode == 200){
-    setState(() {
-      Series = json.decode(response.body)['results'];
-    });
-    for (var series in Series){
-      int seriesId = series['id'];
-
-      await fetchSeriesDetails(seriesId);
+    String? sessionKey = await getSessionKey();
+    if (sessionKey == null) {
+      _showErrorDialog(context, 'Session Expired', 'Please log in again.');
+      return;
     }
-} else
-  {
-    throw const FormatException(' Failed to load Movies. Retry');
-  }
-}
-  @override
-  Widget build(BuildContext context){
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, //number of columns
-        crossAxisSpacing: 10.0, //spacing btn columns
-        childAspectRatio: 3/4, //ratio btn width & length
-        mainAxisSpacing: 10.0 //space btn rows
-        ),
-      itemCount: Series.length,
-      itemBuilder: (BuildContext context, int index){
-        int seriesId = int.parse('${Series[index] ['id']}');
-        String seriesPoster = '${Series[index] ['poster_path']}';
 
-        return GestureDetector(
-  onTap: () async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SeriesDetailsScreen(seriesId: seriesId),  // Pass the movieId as an argument
-      ),
-    );
-  },
-          child: Card(
-            elevation: 5.0,
-            child: Padding(padding: const EdgeInsets.all(8.0),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: Image.network('https://image.tmdb.org/t/p/original$seriesPoster', //https://api.themoviedb.org/3/movie/{movie_id}/images, or https://api.themoviedb.org/3/movie/$movieId?language=en-US
-                                ),
-
-              ),
-              Text(
-                  Series[index]['original_name'],
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              Text('${Series[index] ['id']}',
-                    textAlign:  TextAlign.left,
-                    style: const TextStyle(
-                      fontSize: 15,
-                    ),
-                    )
-                //fetch movie images
-        ]),
-          ),
-
-        ));
-      }
-    );
-  }
-}
-
-fetchSeriesDetails(int seriesId) {
-}
-
-class SeriesScreen extends StatelessWidget {
-  final int seriesId;
-  const SeriesScreen ({super.key, required this.seriesId});
-
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(),
-      body:const SeriesDetails(seriesId: 498),
-    );
-  }
-}
-
-class SeriesDetails extends StatefulWidget {
-  final int seriesId;
-
-  const SeriesDetails ({super.key, required this.seriesId});
-
-    @override
-  _SeriesDetailsState createState () => _SeriesDetailsState();
-}
-
-class _SeriesDetailsState extends State<SeriesDetails> {
- late Map<String, dynamic> SeriesDets = {};
- //List<dynamic> Movies = [];
-
-  @override
-  void initState(){
-    super.initState();
-    fetchSeriesDetails();
-  }
-
-
-Future<Map<String, dynamic>> fetchSeriesDetails() async {
     final response = await http.get(
-      Uri.parse('$baseurlfinal/series/getseriesdetails/${widget.seriesId}/'),
+      Uri.parse('$baseurlfinal/series/trendingseries'),
       headers: {
-        HttpHeaders.authorizationHeader: '$auth',
+        HttpHeaders.authorizationHeader: 'Bearer $sessionKey',
         'accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        var decodedData = json.decode(response.body)['results'];
+        Series = decodedData ?? [];
       });
 
-        if (response.statusCode == 200){
-          setState(() {
-            SeriesDets = json.decode(response.body)['Details'];
-          });
-        } else {
-          throw Exception('Failed to load Movie Details./n Tap to try again/n');
-        }
-        return{};
+      for (var series in Series) {
+        int seriesId = series['id'];
+        await fetchSeriesDetails(seriesId);
+      }
+    } else {
+      _showErrorDialog(context, 'Error', 'Failed to load series. Retry.');
+    }
   }
 
+  Future<void> fetchSeriesDetails(int seriesId) async {
+    String? sessionKey = await getSessionKey();
+    if (sessionKey == null) {
+      return;
+    }
 
-   @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      //backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children:[
-          Text(SeriesDets['title'] ?? 'Unknown Title'),
-          Text(SeriesDets['overview'] ?? 'Unknown Plot'),
-          Text(SeriesDets['numberofseasons'] ?? 'Unknown Plot'),
-        ],
-      ),
-
+    final response = await http.get(
+      Uri.parse('$baseurlfinal/series/getseriesdetails/$seriesId'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $sessionKey',
+        'accept': 'application/json',
+      },
     );
-
-
-
+    // Optional: store or use details as needed
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Trending Series"),
+        backgroundColor: const Color.fromARGB(221, 95, 95, 95),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12.0,
+            mainAxisSpacing: 12.0,
+            childAspectRatio: 2 / 3,
+          ),
+          itemCount: Series.length,
+          itemBuilder: (BuildContext context, int index) {
+            int seriesId = int.parse('${Series[index]['id']}');
+            String seriesPoster = '${Series[index]['poster_path']}';
+            String title = Series[index]['original_name'] ?? 'Unknown Series';
+
+            return GestureDetector(
+              onTap: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SeriesDetailsScreen(seriesId: seriesId),
+                  ),
+                );
+              },
+              child: Card(
+                elevation: 6.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.network(
+                        'https://image.tmdb.org/t/p/original$seriesPoster',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Center(child: Icon(Icons.broken_image)),
+                        loadingBuilder: (context, child, progress) {
+                          if (progress == null) return child;
+                          return const Center(child: CircularProgressIndicator());
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.black87, Colors.transparent],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                          ),
+                        ),
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 4.0,
+                                color: Colors.black,
+                                offset: Offset(1.0, 1.0),
+                              ),
+                            ],
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
-/*BLOC VS CUBIT
-Bloc extends a cubit
-A cubit uses functions to receive input from UI
-while Bloc uses events to receive input from UI
-Blocprovider, bloclistener & blocbuilder
-Streams are interactions in the app needed to emit changes in code.*/
+// Utilities
 
+Future<String?> getSessionKey() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('sessionKey');
+}
+
+void _showErrorDialog(BuildContext context, String title, String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:Piratecoin/movie_details.dart';
-//import 'package:http/shujaanet.com/coin.dart' as http;
+import 'package:Piratecoin/movie_details.dart';
+//import 'package:http/bazuunet.com/coin.dart' as http;
 import 'package:Piratecoin/pirateXchange_container.dart';
 import 'package:Piratecoin/login_container.dart';
 import 'package:Piratecoin/register_container.dart';
@@ -18,13 +18,9 @@ void main() {
         '/second': (context) => const LoginScreen(),
         '/third': (context) => const CreateScreen(),
         '/home': (context) => const HomeScreen(),
-        'third': (context) => const TrendingMovieScreen(),
-        //'fourth': (context) => const MovieOverviewScreen(),
+        //'third': (context) => const TrendingMovieScreen(),
         '/fifth': (context) => const TrendingMovieScreenfinal(),
-        //'/sixth': (context) => const PirateXchangeScreen(),
-        //'/seven': (context) => const MyWatchlistScreen(),
-        '/eighth': (context) => const MovieDetailsScreen(movieId: 0,),
-        '/ninth': (context) => const SeriesDetailsScreen(seriesId: 0,),
+        '/ninth': (context) => const SeriesDetailsScreen(seriesId: 0),
       },
       debugShowCheckedModeBanner: false,
     ),
@@ -37,146 +33,120 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const title = 'HOME';
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        appBar: AppBar(
-          title: const Text(title),
-          backgroundColor: Color.fromARGB(30, 30, 30, 30),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Movie Container
-              GestureDetector(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(title),
+        backgroundColor: Color.fromARGB(30, 30, 30, 30),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Movie Card
+            Expanded(
+              child: GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const TrendingMovieScreenfinal()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrendingMovieScreenfinal(),
+                    ),
+                  );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ClipRRect(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        child: Image.asset(
-                          'lib/madmax.jpg',
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 5,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          'https://image.tmdb.org/t/p/original/hA2ple9q4qnwxp3hKVNhroipsir.jpg',
                           height: 200,
                           width: 150,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.error),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Movies',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Movies',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 20),  // Space between columns
-              // Series Container
-              GestureDetector(
+            ),
+            const SizedBox(width: 30),
+
+            // Series Card
+            Expanded(
+              child: GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const TrendingSeriesScreenfinal()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TrendingSeriesScreenfinal(),
+                    ),
+                  );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      ClipRRect(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        child: Image.asset(
-                          'lib/hotd.jpg',
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 5,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.network(
+                          'https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg',
                           height: 200,
                           width: 150,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(Icons.error),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'Series',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Series',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-class TrendingMovieScreen extends StatelessWidget {
-  const TrendingMovieScreen({super.key});
-  static const title = 'Trending Movies';
-
-  @override
-  Widget build(context) {
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        appBar: AppBar(
-          title: const Text(title),
-          backgroundColor: Color.fromARGB(30, 30, 30, 30),
-        ),
-        body: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(
-            20,
-                (index) {
-              return Center(
-                child: Text(
-                  'Mad Max: Fury Road',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Similar for other screens
