@@ -197,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: _googleLogin,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 11, 129, 191),
+                      backgroundColor: Colors.blueAccent,
                       padding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 40),
                       shape: RoundedRectangleBorder(
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushNamed(context, '/third');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 11, 129, 191),
+                      backgroundColor: Colors.blueAccent,
                       padding: const EdgeInsets.symmetric(
                           vertical: 14, horizontal: 40),
                       shape: RoundedRectangleBorder(

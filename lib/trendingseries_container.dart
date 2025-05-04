@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:convert';
+import 'package:Piratecoin/presentation/mainScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:Piratecoin/series_details.dart';
 import 'package:Piratecoin/blocdef.dart';
+import 'package:Piratecoin/presentation/mainScaffold.dart';
 
 class TrendingSeriesScreenfinal extends StatefulWidget {
   const TrendingSeriesScreenfinal({super.key});
@@ -70,11 +72,8 @@ class _TrendingSeriesScreenState extends State<TrendingSeriesScreenfinal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Trending Series"),
-        backgroundColor: const Color.fromARGB(221, 95, 95, 95),
-      ),
+    return MainScaffold(
+      title: 'Trending Shows',
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(

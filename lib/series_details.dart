@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:Piratecoin/blocdef.dart';
+import 'package:Piratecoin/presentation/mainScaffold.dart';
 
 class SeriesDetailsScreen extends StatefulWidget {
   final int seriesId;
@@ -80,12 +81,9 @@ class _SeriesDetailsScreenState extends State<SeriesDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(seriesTitle),
-      ),
-      body: Stack(
+    return MainScaffold(
+        title: seriesTitle,
+        body: Stack(
         children: [
           // Background Image
           Positioned.fill(

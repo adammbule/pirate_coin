@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:Piratecoin/blocdef.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:Piratecoin/presentation/mainScaffold.dart';
 
 // Function to retrieve the session key for subsequent API calls
 Future<String?> getSessionKey() async {
@@ -63,11 +64,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent, // Remove default background color
-      appBar: AppBar(
-        title: const Text('Movie Details'),
-      ),
+    return MainScaffold(
+      title: movieTitle,
       body: Stack(
         children: [
           // Background Image

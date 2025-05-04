@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'blocdef.dart';
-import 'movie_details.dart'; // Make sure this exists
+import 'movie_details.dart';
+import 'package:Piratecoin/presentation/mainScaffold.dart';
 
 class TrendingMovieScreenfinal extends StatefulWidget {
   const TrendingMovieScreenfinal({super.key});
@@ -39,8 +40,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal> {
 
     if (response.statusCode == 200) {
       setState(() {
-        var decodedData = json.decode(response.body)['results'];
-        Movies = decodedData ?? [];
+        Movies = json.decode(response.body)['results'] ?? [];
       });
       for (var movie in Movies) {
         int movieId = movie['id'];
@@ -53,27 +53,25 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal> {
 
   Future<void> fetchMovieDetails(int movieId) async {
     String? sessionKey = await getSessionKey();
-    if (sessionKey == null) {
-      _showErrorDialog(context, 'Session Expired', 'Please log in again.');
-      return;
-    }
-    final response = await http.get(
+    if (sessionKey == null) return;
+    await http.get(
       Uri.parse('$baseurlfinal/movies/moviedetails/$movieId'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer $sessionKey',
         'accept': 'application/json',
       },
     );
-    // Optional: handle individual movie details if needed
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return MainScaffold(
+      /*appBar: AppBar(
         title: const Text("Trending Movies"),
         backgroundColor: const Color.fromARGB(221, 95, 95, 95),
-      ),
+      ),*/
+      title: 'Trending Movies',
+      //drawer: const MainScaffold(title: title, body: body), // ⬅️ Drawer included here
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
@@ -111,7 +109,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal> {
                         'https://image.tmdb.org/t/p/original$moviePoster',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
-                            const Center(child: Icon(Icons.broken_image)),
+                        const Center(child: Icon(Icons.broken_image)),
                         loadingBuilder: (context, child, progress) {
                           if (progress == null) return child;
                           return const Center(child: CircularProgressIndicator());
@@ -161,8 +159,7 @@ class _TrendingMovieScreenState extends State<TrendingMovieScreenfinal> {
   }
 }
 
-// Utilities
-
+// Utility functions
 Future<String?> getSessionKey() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getString('sessionKey');
