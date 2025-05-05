@@ -72,11 +72,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data['token'] != null) {
-          _saveTokenAndNavigate(data['token']);
-        } else {
-          _showErrorDialog('Login Failed', 'No token received.');
-        }
+await SharedPreferences.getInstance()
+    .then((prefs) => prefs.setString('sessionKey', data['sessionKey']));
+await _saveTokenAndNavigate(data['sessionKey']); // ✅ Navigate to home
+
       } else {
         _showErrorDialog('Login Failed', 'Invalid email or password.');
       }
@@ -109,9 +108,17 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> logoutUser(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('sessionKey'); // Clear session token
+
+  // Navigate to login screen and clear backstack
+  Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+}
+
   Future<void> _saveTokenAndNavigate(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    await prefs.setString('sessionKey', token);
     setState(() {
       _token = token;
     });

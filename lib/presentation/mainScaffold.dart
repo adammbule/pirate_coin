@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Piratecoin/presentation/logout.dart';
 
 class MainScaffold extends StatelessWidget {
   final String title;
@@ -81,8 +82,8 @@ class MainScaffold extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
               title: const Text('Logout', style: TextStyle(color: Colors.red)),
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(context, '/second', (route) => false);
+              onTap: () async {
+                await logoutUser(context);
               },
             ),
           ],

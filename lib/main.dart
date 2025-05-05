@@ -76,13 +76,13 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   _trendingCard(
                     context,
-                    'https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg',
+                    'https://image.tmdb.org/t/p/w500//vnfgoohSwKNOcRfJOPULXTvX0cu.jpg',
                     'Open Movies',
                     '/movies',
                   ),
                   _trendingCard(
                     context,
-                    'https://image.tmdb.org/t/p/w500/duF5R1AkzGTPZWxpByL7oJftM2G.jpg',
+                    'https://image.tmdb.org/t/p/w500/jYfMTSiFFK7ffbY2lay4zyvTkEk.jpg',
                     'Watch Now',
                     '/movies',
                   ),
@@ -108,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   _trendingCard(
                     context,
-                    'https://image.tmdb.org/t/p/w500/akWnJ08RnMz4JjkpwM2u9oJbcTg.jpg',
+                    'https://image.tmdb.org/t/p/w500/dg3OindVAGZBjlT3xYKqIAdukPL.jpg',
                     'Top Rated',
                     '/series',
                   ),
