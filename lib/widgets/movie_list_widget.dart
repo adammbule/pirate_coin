@@ -1,54 +1,21 @@
 import 'package:flutter/material.dart';
 
-class MovieListWidget extends StatelessWidget {
-  final List<String> movies;
+import 'package:Piratecoin/features/movies/domain/entities/movie.dart';
 
-  const MovieListWidget({super.key, required this.movies});
+class MovieListWidget extends StatelessWidget {
+  final List<Movie> movies;
+
+  const MovieListWidget({Key? key, required this.movies}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Display only the first 50 movies
-    final displayedMovies = movies.take(50).toList();
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Table(
-          columnWidths: const {
-            0: FlexColumnWidth(1),
-            1: FlexColumnWidth(1),
-          },
-          border: TableBorder.all(color: Colors.grey),
-          children: List.generate(
-            50,
-            (index) {
-              final leftIndex = index;
-              final rightIndex = index + 50;
-              return TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      leftIndex < displayedMovies.length
-                          ? displayedMovies[leftIndex]
-                          : '',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      rightIndex < movies.length ? movies[rightIndex] : '',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-      ),
+    return ListView.builder(
+      itemCount: movies.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(movies[index].movieTitle ?? ''),
+        );
+      },
     );
   }
 }

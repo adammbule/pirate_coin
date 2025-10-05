@@ -29,12 +29,16 @@ class AuthRemoteDataSource {
 
         final user = User.fromJson(data);
 
+        final token = user.token ?? '';
+        final userid = user.userid ?? '';
+        final username = user.username ?? '';
+
         //debugPrint("Login response (User): ${user.username}, ${user.userid}");
 
         // Save only the essentials
-        await storage.saveToken(user.token ?? '');
-        await storage.saveUsername(user.username ?? '');
-        await storage.saveUserid(user.userid ?? '');
+        await storage.saveToken(token);
+        await storage.saveUsername(username);
+        await storage.saveUserid(userid);
 
         return user;
       } else {

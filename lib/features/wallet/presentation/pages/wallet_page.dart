@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Piratecoin/widgets/hamburger_menu.dart';
 
 class WalletScreen extends StatelessWidget {
   final int coinCount;
@@ -16,6 +17,7 @@ class WalletScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('My Wallet'),
       ),
+      drawer: const HamburgerMenu(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

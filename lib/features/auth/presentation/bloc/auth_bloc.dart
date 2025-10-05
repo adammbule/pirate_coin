@@ -26,10 +26,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         event.password,
       );
 
+      final token = user.token ?? '';
+      final userid = user.userid ?? '';
+      final username = user.username ?? '';
+
       // Save token securely
-      await storage.saveToken(user.token ?? '');
-      await storage.saveUsername(user.username ?? '');
-      await storage.saveUserid(user.userid ?? '');
+      await storage.saveToken(token);
+      await storage.saveUsername(username);
+      await storage.saveUserid(userid);
 
       // Emit authenticated state with real user
       emit(AuthAuthenticated(

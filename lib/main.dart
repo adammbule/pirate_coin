@@ -1,3 +1,6 @@
+import 'package:Piratecoin/features/movies/data/datasources/movie_remote_datasource.dart';
+import 'package:Piratecoin/features/movies/domain/repositories/movie_repository.dart';
+import 'package:Piratecoin/features/movies/presentation/bloc/trending_movies_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:Piratecoin/core/routers/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +10,7 @@ import 'features/auth/data/datasources/auth_remote_datasource.dart';
 import 'services/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'features/auth/data/datasources/auth_repository_impl.dart';
+import 'features/movies/data/movies_repository_impl.dart';
 
 void main() {
   // Initialize dependencies
@@ -25,6 +29,13 @@ void main() {
     storage: secureStorage,
   );
 
+  final MovieRepository = MovieRepositoryImpl(
+    remote: MovieRemoteDataSource(
+        dio: dio,
+        storage:
+            secureStorage), // You need to create a MovieRemoteDataSource similar to AuthRemoteDataSource
+    storage: secureStorage,
+  );
 
   runApp(
     MultiBlocProvider(
@@ -33,6 +44,11 @@ void main() {
           create: (_) => AuthBloc(
             authRepository: authRepository,
             storage: secureStorage,
+          ),
+        ),
+        BlocProvider(
+          create: (_) => TrendingMoviesBloc(
+            movieRepository: MovieRepository,
           ),
         ),
       ],
@@ -54,4 +70,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

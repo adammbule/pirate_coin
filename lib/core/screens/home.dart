@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:Piratecoin/features/auth/domain/entities/user.dart'; // import your User model
 import 'package:Piratecoin/features/auth/presentation/bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:Piratecoin/widgets/hamburger_menu.dart';
 import 'package:Piratecoin/features/auth/presentation/bloc/auth_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -55,6 +55,7 @@ class HomeScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text('Welcome ${user.username}'),
             ),
+            drawer: const HamburgerMenu(),
             body: ListView(
               children: [
                 const SizedBox(height: 16),

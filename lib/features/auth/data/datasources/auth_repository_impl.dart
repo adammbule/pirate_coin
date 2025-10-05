@@ -19,10 +19,14 @@ class AuthRepositoryImpl implements AuthRepository {
     // Remote already returns a User
     final user = await remote.login(email, password);
 
+    final token = user.token ?? '';
+    final userid = user.userid ?? '';
+    final username = user.username ?? '';
+
     // Save token & other info securely
-    await storage.saveToken(user.token ?? '');
-    await storage.saveUsername(user.username ?? '');
-    await storage.saveUserid(user.userid ?? '');
+    await storage.saveToken(token);
+    await storage.saveUsername(username);
+    await storage.saveUserid(userid);
 
     return user;
   }

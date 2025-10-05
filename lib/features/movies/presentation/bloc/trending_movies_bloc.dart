@@ -1,54 +1,67 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:Piratecoin/features/movies/domain/entities/movie.dart';
+import 'package:Piratecoin/features/movies/domain/repositories/movie_repository.dart';
 
-// Movie model (replace with your actual model)
-class Movie {
-  final int id;
-  final String title;
-
-  Movie({required this.id, required this.title});
-}
-
-// Events
+/// ─────────────────────────────
+/// EVENTS
+/// ─────────────────────────────
 abstract class TrendingMoviesEvent extends Equatable {
+  const TrendingMoviesEvent();
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-class FetchTrendingMovies extends TrendingMoviesEvent {}
+class FetchTrendingMovies extends TrendingMoviesEvent {
+  const FetchTrendingMovies();
+}
 
-// States
+/// ─────────────────────────────
+/// STATES
+/// ─────────────────────────────
 abstract class TrendingMoviesState extends Equatable {
+  const TrendingMoviesState();
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-class TrendingMoviesInitial extends TrendingMoviesState {}
+class TrendingMoviesInitial extends TrendingMoviesState {
+  const TrendingMoviesInitial();
+}
 
-class TrendingMoviesLoading extends TrendingMoviesState {}
+class TrendingMoviesLoading extends TrendingMoviesState {
+  const TrendingMoviesLoading();
+}
 
 class TrendingMoviesLoaded extends TrendingMoviesState {
   final List<Movie> movies;
 
-  TrendingMoviesLoaded(this.movies);
+  const TrendingMoviesLoaded(this.movies);
 
   @override
-  List<Object> get props => [movies];
+  List<Object?> get props => [movies];
 }
 
 class TrendingMoviesError extends TrendingMoviesState {
   final String message;
 
-  TrendingMoviesError(this.message);
+  const TrendingMoviesError(this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object?> get props => [message];
 }
 
-// Bloc
+/// ─────────────────────────────
+/// BLOC
+/// ─────────────────────────────
 class TrendingMoviesBloc
     extends Bloc<TrendingMoviesEvent, TrendingMoviesState> {
-  TrendingMoviesBloc() : super(TrendingMoviesInitial()) {
+  final MovieRepository movieRepository;
+
+  TrendingMoviesBloc({required this.movieRepository})
+      : super(const TrendingMoviesInitial()) {
     on<FetchTrendingMovies>(_onFetchTrendingMovies);
   }
 
@@ -56,17 +69,12 @@ class TrendingMoviesBloc
     FetchTrendingMovies event,
     Emitter<TrendingMoviesState> emit,
   ) async {
-    emit(TrendingMoviesLoading());
+    emit(const TrendingMoviesLoading());
     try {
-      // Replace with your actual data fetching logic
-      await Future.delayed(const Duration(seconds: 2));
-      final movies = List.generate(
-        10,
-        (index) => Movie(id: index, title: 'Movie $index'),
-      );
+      final movies = await movieRepository.fetchTrendingMovies();
       emit(TrendingMoviesLoaded(movies));
     } catch (e) {
-      emit(TrendingMoviesError('Failed to fetch trending movies'));
+      emit(TrendingMoviesError('Failed to fetch trending movies: $e'));
     }
   }
 }

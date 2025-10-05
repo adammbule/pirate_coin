@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:Piratecoin/widgets/hamburger_menu.dart';
 
 class MovieDetailsScreen extends StatelessWidget {
   final String title;
@@ -19,6 +20,7 @@ class MovieDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const HamburgerMenu(),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -58,14 +60,16 @@ class MovieDetailsScreen extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         releasedDate,
-                        style: const TextStyle(color: Colors.white70, fontSize: 16),
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 16),
                       ),
                       const SizedBox(width: 24),
                       const Icon(Icons.timer, color: Colors.white70, size: 18),
                       const SizedBox(width: 8),
                       Text(
                         runtime,
-                        style: const TextStyle(color: Colors.white70, fontSize: 16),
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 16),
                       ),
                     ],
                   ),

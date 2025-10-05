@@ -11,6 +11,7 @@ import 'package:Piratecoin/features/shows/presentation/pages/show_details_page.d
 import 'package:Piratecoin/features/wallet/presentation/pages/wallet_page.dart';
 import 'package:Piratecoin/core/screens/placeholder_page.dart';
 import 'package:Piratecoin/core/screens/home.dart';
+import 'package:Piratecoin/features/auth/domain/entities/user.dart';
 
 class AppRoutes {
   static const start = '/';
@@ -24,6 +25,7 @@ class AppRoutes {
   static const wallet = '/wallet';
   static const marketplace = '/marketplace';
   static const collections = '/collections';
+  static const logout = '/logout';
 
   static Map<String, WidgetBuilder> routes = {
     start: (context) => const StartScreen(),
@@ -31,7 +33,7 @@ class AppRoutes {
     register: (context) => const RegisterScreen(),
     home: (context) =>
         HomeScreen(user: User(username: 'Guest', token: '', userid: '')),
-    movies: (context) => const TrendingMovieScreen(),
+    movies: (context) => TrendingMovieScreen(),
     shows: (context) => const TrendingShowScreen(),
     showDetails: (context) => const ShowDetailsScreen(
         title: '',
@@ -49,5 +51,18 @@ class AppRoutes {
     wallet: (context) => const WalletScreen(),
     marketplace: (context) => const PlaceholderScreen(title: 'Marketplace'),
     collections: (context) => const PlaceholderScreen(title: 'Collections'),
+    logout: (context) {
+      final storage = SecureStorage();
+      storage.clearToken();
+      // Navigate to login screen after logout
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      });
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    },
   };
 }
