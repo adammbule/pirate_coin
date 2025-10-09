@@ -48,7 +48,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onLogoutRequested(
       LogoutRequested event, Emitter<AuthState> emit) async {
-    await storage.clearToken();
-    emit(AuthInitial());
+    emit(AuthLoading());
+    try {
+      // Call backend logout (blacklist token)
+      await authRepository.logout();
+
+      // Emit initial (unauthenticated) state
+      emit(AuthInitial());
+    } catch (e) {
+      emit(AuthFailure("Logout failed: ${e.toString()}"));
+    }
   }
 }

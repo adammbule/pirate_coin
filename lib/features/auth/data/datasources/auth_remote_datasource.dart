@@ -49,8 +49,28 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<void> logout() async {
-    await storage.clearToken();
+  Future<User> logout(String token) async {
+    try {
+      final response = await dio.post(
+        "https://piratenode.onrender.com/api/users/logout",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = response.data;
+        await storage.clearToken();
+
+        return data;
+      } else {
+        throw Exception("Login failed: ${response.statusCode}");
+      }
+    } on DioException catch (e) {
+      throw Exception("Login error: ${e.message}");
+    }
   }
 
   Future<String?> getSavedToken() async {

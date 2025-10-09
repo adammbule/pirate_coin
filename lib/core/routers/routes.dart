@@ -12,6 +12,7 @@ import 'package:Piratecoin/features/wallet/presentation/pages/wallet_page.dart';
 import 'package:Piratecoin/core/screens/placeholder_page.dart';
 import 'package:Piratecoin/core/screens/home.dart';
 import 'package:Piratecoin/features/auth/domain/entities/user.dart';
+import 'package:Piratecoin/features/auth/presentation/pages/logout_page.dart';
 
 class AppRoutes {
   static const start = '/';
@@ -51,18 +52,6 @@ class AppRoutes {
     wallet: (context) => const WalletScreen(),
     marketplace: (context) => const PlaceholderScreen(title: 'Marketplace'),
     collections: (context) => const PlaceholderScreen(title: 'Collections'),
-    logout: (context) {
-      final storage = SecureStorage();
-      storage.clearToken();
-      // Navigate to login screen after logout
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, AppRoutes.login);
-      });
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    },
+    logout: (context) => const LogoutScreen(),
   };
 }
