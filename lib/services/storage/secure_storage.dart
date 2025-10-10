@@ -5,7 +5,7 @@ class SecureStorage {
   final _storage = const FlutterSecureStorage();
 
   static const _tokenKey = '!%TEWF53y56536WTY#()()UTR!@#%^&*';
-  static const _usernameKey = '@#%53Trewvcedg))63729GT123';
+  static const _usernameKey = '@#%53Trewvcedg63729GT123';
   static const _useridKey = '321&8#@sgrtajfdksy6342UTR364^';
 
   /// Save token securely

@@ -21,6 +21,11 @@ class MovieUseCase {
     return movies;
   }
 
+  Future<List<Movie>> fetchFreshReleases() async {
+    final movies = await movieRepository.fetchFreshReleases();
+    return movies;
+  }
+
   Future<void> fetchWalletBalances() async {
     await movieRepository.fetchWalletBalances();
   }

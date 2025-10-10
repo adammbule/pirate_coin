@@ -51,4 +51,11 @@ class MovieRepositoryImpl implements MovieRepository {
     // TODO: implement getCurrentUser
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<movie_entity.Movie>> fetchFreshReleases() {
+    // TODO: implement fetchFreshReleases
+    final freshRleases = remote.fetchFreshReleases();
+    throw UnimplementedError();
+  }
 }

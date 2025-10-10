@@ -50,8 +50,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LogoutRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      final token = await storage.getToken();
+      if (token == null || token.isEmpty) {
+        emit(AuthFailure("No token found"));
+        return;
+      }
       // Call backend logout (blacklist token)
-      await authRepository.logout();
+      await authRepository.logout(token);
 
       // Emit initial (unauthenticated) state
       emit(AuthInitial());

@@ -29,18 +29,18 @@ class LogoutScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () {
-                print("Logout cancelled");
+                //print("Logout cancelled");
                 Navigator.of(dialogContext).pop(false);
               },
               child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () {
-                print("Logout confirmed");
+                //print("Logout confirmed");
                 Navigator.of(dialogContext).pop(true);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
+                backgroundColor: const Color.fromARGB(255, 109, 219, 210),
                 foregroundColor: Colors.white,
               ),
               child: const Text('Logout'),
@@ -51,7 +51,7 @@ class LogoutScreen extends StatelessWidget {
     );
 
     if (shouldLogout == true) {
-      print("Dispatching LogoutRequested...");
+      //print("Dispatching LogoutRequested...");
       context.read<AuthBloc>().add(LogoutRequested());
     }
   }
@@ -79,8 +79,8 @@ class LogoutScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Logout'),
-            backgroundColor: Colors.redAccent,
+            title: const Text('Logout', style: TextStyle(color: Colors.white)),
+            backgroundColor: const Color.fromARGB(255, 73, 60, 60),
           ),
           body: Center(
             child: Column(

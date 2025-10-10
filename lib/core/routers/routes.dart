@@ -13,6 +13,7 @@ import 'package:Piratecoin/core/screens/placeholder_page.dart';
 import 'package:Piratecoin/core/screens/home.dart';
 import 'package:Piratecoin/features/auth/domain/entities/user.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/logout_page.dart';
+import 'package:Piratecoin/services/storage/secure_storage.dart';
 
 class AppRoutes {
   static const start = '/';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const home = '/home';
   static const movies = '/movies';
   static const shows = '/shows';
+  static const others = '/others';
   static const showDetails = '/showDetails';
   static const movieDetails = '/movieDetails';
   static const wallet = '/wallet';
@@ -49,6 +51,7 @@ class AppRoutes {
           runtime: '',
           backgroundImageUrl: '',
         ),
+    others: (context) => const PlaceholderScreen(title: 'Others'),
     wallet: (context) => const WalletScreen(),
     marketplace: (context) => const PlaceholderScreen(title: 'Marketplace'),
     collections: (context) => const PlaceholderScreen(title: 'Collections'),
