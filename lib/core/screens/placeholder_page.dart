@@ -1,3 +1,4 @@
+import 'package:Piratecoin/widgets/hamburger_menu.dart';
 import 'package:flutter/material.dart';
 
 class PlaceholderScreen extends StatelessWidget {
@@ -11,6 +12,7 @@ class PlaceholderScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
+      drawer: HamburgerMenu(),
       body: const Center(
         child: Text(
           'This Screen is coming soon!',
