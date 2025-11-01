@@ -2,7 +2,6 @@ import 'package:Piratecoin/features/movies/domain/entities/movie.dart'
     as movie_entity;
 import 'package:dio/dio.dart';
 import 'package:Piratecoin/services/storage/secure_storage.dart';
-import 'package:flutter/material.dart';
 
 class MovieRemoteDataSource {
   final Dio dio;

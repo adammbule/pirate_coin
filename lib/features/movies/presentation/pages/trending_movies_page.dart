@@ -7,6 +7,7 @@ import 'package:Piratecoin/features/movies/presentation/bloc/trending_movies_blo
 import 'package:Piratecoin/widgets/hamburger_menu.dart';
 import 'package:Piratecoin/services/storage/secure_storage.dart';
 import 'package:Piratecoin/widgets/theme_widget.dart'; // ✅ Use your custom theme
+import 'package:Piratecoin/widgets/movie_details_template.dart';
 
 class TrendingMovieScreen extends StatelessWidget {
   const TrendingMovieScreen({super.key});
@@ -117,49 +118,70 @@ class TrendingMovieScreen extends StatelessWidget {
 
   /// Helper widget: builds a single movie card with poster and title
   Widget _buildMovieCard(BuildContext context, dynamic movie) {
-    return Container(
-      width: 140,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: kCardColor,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 7,
-              child: Image.network(
-                movie.moviePoster ??
-                    'https://via.placeholder.com/140x180.png?text=No+Image',
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const Icon(Icons.broken_image,
-                    color: Colors.white54, size: 40),
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MovieDetailsTemplate(
+              title: movie.movieTitle ?? 'Untitled',
+              plot: movie.moviePlot ?? 'No plot available.',
+              releaseDate: movie.releaseDate ?? 'Unknown',
+              //runtime: movie.runtime ?? 'N/A',
+              backgroundImageUrl: movie.moviePoster ??
+                  'https://via.placeholder.com/400x600.png?text=No+Image',
             ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                alignment: Alignment.center,
-                child: Text(
-                  movie.movieTitle ?? 'Untitled',
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    height: 1.2,
+          ),
+        );
+      },
+      child: Container(
+        width: 140,
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: kCardColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 7,
+                child: Image.network(
+                  movie.moviePoster ??
+                      'https://via.placeholder.com/140x180.png?text=No+Image',
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Icon(
+                    Icons.broken_image,
+                    color: Colors.white54,
+                    size: 40,
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                flex: 3,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  alignment: Alignment.center,
+                  child: Text(
+                    movie.movieTitle ?? 'Untitled',
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      height: 1.2,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

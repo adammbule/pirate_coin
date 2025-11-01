@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:Piratecoin/features/auth/domain/repositories/auth_repository.dart';
 import 'package:Piratecoin/features/auth/domain/entities/user.dart';

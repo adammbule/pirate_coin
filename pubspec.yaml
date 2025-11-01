@@ -34,6 +34,7 @@ dependencies:
   google_sign_in: ^5.0.7
   flutter_secure_storage: ^9.2.4
   dio: ^5.9.0
+  youtube_player_flutter: ^8.1.2
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:Piratecoin/features/auth/domain/entities/user.dart';
 import 'package:dio/dio.dart';
 import 'package:Piratecoin/services/storage/secure_storage.dart';
-import 'package:flutter/material.dart';
 
 class AuthRemoteDataSource {
   final Dio dio;

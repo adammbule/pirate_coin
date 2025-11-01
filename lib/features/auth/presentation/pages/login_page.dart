@@ -6,7 +6,7 @@ import 'package:Piratecoin/features/auth/presentation/bloc/auth_state.dart';
 import 'package:Piratecoin/core/screens/home.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();

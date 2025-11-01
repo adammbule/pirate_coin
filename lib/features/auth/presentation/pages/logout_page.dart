@@ -5,7 +5,7 @@ import 'package:Piratecoin/features/auth/presentation/bloc/auth_event.dart';
 import 'package:Piratecoin/features/auth/presentation/bloc/auth_state.dart';
 
 class LogoutScreen extends StatelessWidget {
-  const LogoutScreen({Key? key}) : super(key: key);
+  const LogoutScreen({super.key});
 
   Future<void> _confirmLogout(BuildContext context) async {
     print("Opening logout dialog..."); // For debugging

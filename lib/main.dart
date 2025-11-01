@@ -1,5 +1,4 @@
 import 'package:Piratecoin/features/movies/data/datasources/movie_remote_datasource.dart';
-import 'package:Piratecoin/features/movies/domain/repositories/movie_repository.dart';
 import 'package:Piratecoin/features/movies/presentation/bloc/trending_movies_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:Piratecoin/core/routers/routes.dart';

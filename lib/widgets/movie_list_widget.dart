@@ -5,7 +5,7 @@ import 'package:Piratecoin/features/movies/domain/entities/movie.dart';
 class MovieListWidget extends StatelessWidget {
   final List<Movie> movies;
 
-  const MovieListWidget({Key? key, required this.movies}) : super(key: key);
+  const MovieListWidget({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,6 @@ import 'package:Piratecoin/features/movies/presentation/pages/trending_movies_pa
 import 'package:flutter/material.dart';
 import 'package:Piratecoin/core/screens/start.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/login_page.dart';
-import 'package:Piratecoin/services/storage/secure_storage.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/register_page.dart';
 import 'package:Piratecoin/features/movies/presentation/pages/movies_details_page.dart';
 //import 'package:Piratecoin/features/shows/presentation/pages/trending_shows_page.dart';
@@ -11,9 +10,7 @@ import 'package:Piratecoin/features/movies/presentation/pages/movies_details_pag
 import 'package:Piratecoin/features/wallet/presentation/pages/wallet_page.dart';
 import 'package:Piratecoin/core/screens/placeholder_page.dart';
 import 'package:Piratecoin/core/screens/home.dart';
-import 'package:Piratecoin/features/auth/domain/entities/user.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/logout_page.dart';
-import 'package:Piratecoin/services/storage/secure_storage.dart';
 
 class AppRoutes {
   static const start = '/';
@@ -36,7 +33,7 @@ class AppRoutes {
     register: (context) => const RegisterScreen(),
     home: (context) =>
         HomeScreen(user: User(username: 'Guest', token: '', userid: '')),
-    movies: (context) => TrendingMovieScreen(),
+    movies: (context) => const TrendingMovieScreen(),
     //shows: (context) => const TrendingShowScreen(),
     // showDetails: (context) => const ShowDetailsScreen(
     //     title: '',
@@ -47,8 +44,8 @@ class AppRoutes {
     movieDetails: (context) => const MovieDetailsScreen(
           title: '',
           plot: '',
-          releasedDate: '',
-          runtime: '',
+          releaseDate: '',
+          //runtime: '',
           backgroundImageUrl: '',
         ),
     others: (context) => const PlaceholderScreen(title: 'Others'),

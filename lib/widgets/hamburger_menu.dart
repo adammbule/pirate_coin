@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:Piratecoin/widgets/theme_widget.dart'; // for colors and gradients
-import 'package:Piratecoin/features/auth/presentation/bloc/auth_bloc.dart';
 
 class HamburgerMenu extends StatefulWidget {
   const HamburgerMenu({super.key});
@@ -15,15 +14,15 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
 
   // Navigation items
   final List<_NavItem> _items = [
-    _NavItem(icon: Icons.home, label: 'Home', route: '/home'),
-    _NavItem(icon: Icons.movie, label: 'Movies', route: '/movies'),
-    _NavItem(icon: Icons.tv, label: 'Shows', route: '/shows'),
-    _NavItem(icon: Icons.video_file, label: 'Others', route: '/others'),
-    _NavItem(icon: Icons.shop, label: 'Marketplace', route: '/marketplace'),
-    _NavItem(icon: Icons.currency_bitcoin, label: 'Mint', route: '/mint'),
-    _NavItem(
+    const _NavItem(icon: Icons.home, label: 'Home', route: '/home'),
+    const _NavItem(icon: Icons.movie, label: 'Movies', route: '/movies'),
+    const _NavItem(icon: Icons.tv, label: 'Shows', route: '/shows'),
+    const _NavItem(icon: Icons.video_file, label: 'Others', route: '/others'),
+    const _NavItem(icon: Icons.shop, label: 'Marketplace', route: '/marketplace'),
+    const _NavItem(icon: Icons.currency_bitcoin, label: 'Mint', route: '/mint'),
+    const _NavItem(
         icon: Icons.account_balance_wallet, label: 'Wallet', route: '/wallet'),
-    _NavItem(icon: Icons.logout, label: 'Logout', route: '/logout'),
+    const _NavItem(icon: Icons.logout, label: 'Logout', route: '/logout'),
   ];
 
   @override

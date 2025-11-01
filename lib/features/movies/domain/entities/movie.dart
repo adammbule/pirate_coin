@@ -36,7 +36,7 @@ class Movie {
       'title': movieTitle,
       'poster_path': moviePoster,
       'overview': moviePlot,
-      'release_date': releaseDate,
+      'releaseDate': releaseDate,
       'vote_average': voteAverage,
     };
   }

@@ -12,7 +12,7 @@ class PlaceholderScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      drawer: HamburgerMenu(),
+      drawer: const HamburgerMenu(),
       body: const Center(
         child: Text(
           'This Screen is coming soon!',

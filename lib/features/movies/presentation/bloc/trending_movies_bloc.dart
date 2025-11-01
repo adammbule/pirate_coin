@@ -53,6 +53,7 @@ class TrendingMoviesError extends TrendingMoviesState {
   List<Object?> get props => [message];
 }
 
+
 /// ─────────────────────────────
 /// BLOC
 /// ─────────────────────────────

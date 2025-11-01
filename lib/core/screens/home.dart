@@ -103,8 +103,8 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 children: [
                   const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
                     child: PirateTitle("Dashboard"),
                   ),
                   const SizedBox(height: 20),
