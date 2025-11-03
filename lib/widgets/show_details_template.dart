@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:Piratecoin/widgets/theme_widget.dart'; // for kBackgroundColor, kPirateGradient, etc.
 
-class MovieDetailsTemplate extends StatefulWidget {
+class ShowDetailsTemplate extends StatefulWidget {
   final String title;
   final String plot;
   final String releaseDate;
@@ -12,7 +12,7 @@ class MovieDetailsTemplate extends StatefulWidget {
   final List<String>? genres;
   final VoidCallback? onBack;
 
-  const MovieDetailsTemplate({
+  const ShowDetailsTemplate({
     super.key,
     required this.title,
     required this.plot,
@@ -25,10 +25,10 @@ class MovieDetailsTemplate extends StatefulWidget {
   });
 
   @override
-  State<MovieDetailsTemplate> createState() => _MovieDetailsTemplateState();
+  State<ShowDetailsTemplate> createState() => _ShowDetailsTemplateState();
 }
 
-class _MovieDetailsTemplateState extends State<MovieDetailsTemplate> {
+class _ShowDetailsTemplateState extends State<ShowDetailsTemplate> {
   void _showTrailer(BuildContext context, String trailerUrl) {
     final videoId = YoutubePlayer.convertUrlToId(trailerUrl);
     if (videoId == null) {

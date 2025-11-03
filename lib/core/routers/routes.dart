@@ -5,7 +5,7 @@ import 'package:Piratecoin/core/screens/start.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/login_page.dart';
 import 'package:Piratecoin/features/auth/presentation/pages/register_page.dart';
 import 'package:Piratecoin/features/movies/presentation/pages/movies_details_page.dart';
-//import 'package:Piratecoin/features/shows/presentation/pages/trending_shows_page.dart';
+import 'package:Piratecoin/features/shows/presentation/pages/trending_shows_page.dart';
 //import 'package:Piratecoin/features/shows/presentation/pages/show_details_page.dart';
 import 'package:Piratecoin/features/wallet/presentation/pages/wallet_page.dart';
 import 'package:Piratecoin/core/screens/placeholder_page.dart';
@@ -34,7 +34,7 @@ class AppRoutes {
     home: (context) =>
         HomeScreen(user: User(username: 'Guest', token: '', userid: '')),
     movies: (context) => const TrendingMovieScreen(),
-    //shows: (context) => const TrendingShowScreen(),
+    shows: (context) => const TrendingShowScreen(),
     // showDetails: (context) => const ShowDetailsScreen(
     //     title: '',
     //     plot: '',

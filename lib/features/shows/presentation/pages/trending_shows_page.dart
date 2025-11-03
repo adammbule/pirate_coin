@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:Piratecoin/features/movies/data/datasources/movie_remote_datasource.dart';
-import 'package:Piratecoin/features/movies/data/movies_repository_impl.dart';
-import 'package:Piratecoin/features/movies/presentation/bloc/trending_movies_bloc.dart';
+import 'package:Piratecoin/features/shows/data/datasources/show_remote_datasource.dart';
+import 'package:Piratecoin/features/shows/data/shows_repository_impl.dart';
+import 'package:Piratecoin/features/shows/presentation/bloc/trending_shows_bloc.dart';
 import 'package:Piratecoin/widgets/hamburger_menu.dart';
 import 'package:Piratecoin/services/storage/secure_storage.dart';
 import 'package:Piratecoin/widgets/theme_widget.dart'; // ✅ Use your custom theme
-import 'package:Piratecoin/widgets/movie_details_template.dart';
+import 'package:Piratecoin/widgets/show_details_template.dart';
 
-class TrendingMovieScreen extends StatelessWidget {
-  const TrendingMovieScreen({super.key});
+class TrendingShowScreen extends StatelessWidget {
+  const TrendingShowScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
     final storage = SecureStorage();
-    final movieRepository = MovieRepositoryImpl(
-      remote: MovieRemoteDataSource(dio: dio, storage: storage),
+    final showRepository = ShowRepositoryImpl(
+      remote: ShowRemoteDataSource(dio: dio, storage: storage),
       storage: storage,
     );
 
     return BlocProvider(
-      create: (_) => TrendingMoviesBloc(movieRepository: movieRepository)
-        ..add(const FetchTrendingMovies()),
+      create: (_) => TrendingShowsBloc(showRepository: showRepository)
+        ..add(const FetchTrendingShows()),
       child: Scaffold(
         backgroundColor: kBackgroundColor,
         appBar: AppBar(
-          title: const PirateTitle('Movies'),
+          title: const PirateTitle('Shows'),
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
@@ -36,17 +36,17 @@ class TrendingMovieScreen extends StatelessWidget {
           ),
         ),
         drawer: const HamburgerMenu(),
-        body: BlocBuilder<TrendingMoviesBloc, TrendingMoviesState>(
+        body: BlocBuilder<TrendingShowsBloc, TrendingShowsState>(
           builder: (context, state) {
-            if (state is TrendingMoviesLoading) {
+            if (state is TrendingShowsLoading) {
               return const Center(
                 child: CircularProgressIndicator(color: Colors.cyanAccent),
               );
-            } else if (state is TrendingMoviesLoaded) {
-              final trending = state.movies.take(10).toList();
-              final popular = state.movies.skip(10).take(10).toList();
-              final myMovies = state.movies.skip(20).take(10).toList();
-              final fresh = state.movies.skip(30).take(10).toList();
+            } else if (state is TrendingShowsLoaded) {
+              final trending = state.shows.take(10).toList();
+              final popular = state.shows.skip(10).take(10).toList();
+              final myShows = state.shows.skip(20).take(10).toList();
+              final fresh = state.shows.skip(30).take(10).toList();
 
               return SingleChildScrollView(
                 child: Padding(
@@ -54,15 +54,15 @@ class TrendingMovieScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildMovieRow(context, '🔥 Trending Movies', trending),
-                      _buildMovieRow(context, '⭐ Popular Movies', popular),
-                      _buildMovieRow(context, '🆕 Fresh Releases', fresh),
-                      _buildMovieRow(context, '🎬 My Movies', myMovies),
+                      _buildShowRow(context, '🔥 Trending Shows', trending),
+                      _buildShowRow(context, '⭐ Popular Shows', popular),
+                      _buildShowRow(context, '🆕 Fresh Releases', fresh),
+                      _buildShowRow(context, '🎬 My Shows', myShows),
                     ],
                   ),
                 ),
               );
-            } else if (state is TrendingMoviesError) {
+            } else if (state is TrendingShowsError) {
               return Center(
                 child: Text(
                   state.message,
@@ -77,9 +77,9 @@ class TrendingMovieScreen extends StatelessWidget {
     );
   }
 
-  /// Helper widget: builds a section header and a horizontal list of movie cards
-  Widget _buildMovieRow(
-      BuildContext context, String title, List<dynamic> movies) {
+  /// Helper widget: builds a section header and a horizontal list of show cards
+  Widget _buildShowRow(
+      BuildContext context, String title, List<dynamic> shows) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Column(
@@ -104,10 +104,10 @@ class TrendingMovieScreen extends StatelessWidget {
             height: 220,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
+              itemCount: shows.length,
               itemBuilder: (context, index) {
-                final movie = movies[index];
-                return _buildMovieCard(context, movie);
+                final show = shows[index];
+                return _buildShowCard(context, show);
               },
             ),
           ),
@@ -116,20 +116,20 @@ class TrendingMovieScreen extends StatelessWidget {
     );
   }
 
-  /// Helper widget: builds a single movie card with poster and title
-  Widget _buildMovieCard(BuildContext context, dynamic movie) {
+  /// Helper widget: builds a single show card with poster and title
+  Widget _buildShowCard(BuildContext context, dynamic show) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MovieDetailsTemplate(
-              title: movie.movieTitle ?? 'Untitled',
-              plot: movie.moviePlot ?? 'No plot available.',
-              releaseDate: movie.releaseDate ?? 'Unknown',
+            builder: (context) => ShowDetailsTemplate(
+              title: show.showTitle ?? 'Untitled',
+              plot: show.showPlot ?? 'No plot available.',
+              releaseDate: show.releaseDate ?? 'Unknown',
               trailerUrl: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
-              //runtime: movie.runtime ?? 'N/A',
-              backgroundImageUrl: movie.moviePoster ??
+              //runtime: show.runtime ?? 'N/A',
+              backgroundImageUrl: show.showPoster ??
                   'https://via.placeholder.com/400x600.png?text=No+Image',
             ),
           ),
@@ -151,7 +151,7 @@ class TrendingMovieScreen extends StatelessWidget {
               Expanded(
                 flex: 7,
                 child: Image.network(
-                  movie.moviePoster ??
+                  show.showPoster ??
                       'https://via.placeholder.com/140x180.png?text=No+Image',
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -169,7 +169,7 @@ class TrendingMovieScreen extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
                   alignment: Alignment.center,
                   child: Text(
-                    movie.movieTitle ?? 'Untitled',
+                    show.showTitle ?? 'Untitled',
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
